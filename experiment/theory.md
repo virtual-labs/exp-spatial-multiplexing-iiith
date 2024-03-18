@@ -15,18 +15,18 @@
  \mathbf{y} = \mathbf{USV}^H\mathbf{x} + \mathbf{n}
 ```
 ### 1) Pre-processing at the transmitter
-###     > Let $\mathbf{x}=\mathbf{V\Bar{x}}$
+###     > Let $\mathbf{x}=\mathbf{V\bar{x}}$
 ###     > The received signal is now modified as 
 ```math
-\mathbf{y} = \mathbf{US}\mathbf{\Bar{x}} + \mathbf{n}
+\mathbf{y} = \mathbf{US}\mathbf{\bar{x}} + \mathbf{n}
 ```
 ### 2) Post-processing at the receiver
-### > Let $\mathbf{y}=\mathbf{U}^H\mathbf{\Bar{y}}$
+### > Let $\mathbf{y}=\mathbf{U}^H\mathbf{\bar{y}}$
 ### > The received signal is now modified as 
 ```math
-\mathbf{\Bar{y}} = \mathbf{S}\mathbf{\Bar{x}} + \mathbf{\Bar{n}}
+\mathbf{\bar{y}} = \mathbf{S}\mathbf{\bar{x}} + \mathbf{\bar{n}}
 ```
-### It can be observed from \eqref{final} that The transmit precoding and receiver shaping transform the MIMO channel into $R$ non-interfering parallel single-input single-output (SISO) channels with input $\mathbf{\Bar{x}}$ and output $\mathbf{\Bar{y}}$.
+### It can be observed from \eqref{final} that The transmit precoding and receiver shaping transform the MIMO channel into $R$ non-interfering parallel single-input single-output (SISO) channels with input $\mathbf{\bar{x}}$ and output $\mathbf{\bar{y}}$.
 ![MIMO](https://github.com/virtual-labs/exp-spatial-multiplexing-iiith/assets/81808633/0c9ba7d9-2af9-43ef-9981-a17486a3bbaf)
 ### The conversion process is summarized in the below figure.
 ![MIMO_block](https://github.com/virtual-labs/exp-spatial-multiplexing-iiith/assets/81808633/94b34b77-0d16-451d-a5ca-50c4c2d61e66)
