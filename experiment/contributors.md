@@ -1,11 +1,12 @@
-EMPTY
-<!-- Remove all lines above this line before making changes to the file -->
+
 ### Subject Matter Experts
 | SNo. | Name | Email | Institute | ID |
 | :---: | :---: | :---: | :---: | :---: |
-| 1 | name | email | institute | id |
+| 1 | Praful D. Mankar | praful.mankar@iiit.ac.in | IIIT-H | id |
+| 1 | M. S. S. Manasa | mss.manasa@research.iiit.ac.in | IIIT-H | id |
+
 
 ### Developers
 | SNo. | Name | Email | Institute | ID |
 | :---: | :---: | :---: | :---: | :---: |
-| 1 | name | email | institute | id |
+| 1 | Yash Motwani | yash.motwani@iiit.ac.in | IIIT-H | id |
