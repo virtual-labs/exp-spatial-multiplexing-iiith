@@ -1,13 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<!-- Add CSS at the head of HTML file -->
-    <link rel="stylesheet" href="./css/main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/12.4.1/math.js" integrity="sha512-B2caA1wJW/b3Jhbhbb9waDjQ7NdG30fkULe9CgCzilQ8CUEdh2NdyGi/GrB+0kQdgfBbUdiLyAP2xdcDzNA6Ow==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/numeric/1.2.6/numeric.min.js" integrity="sha512-BK/c8SKG4PMGMg8wo/56FdGMkgQFJgFl8rnVdF1wqIZW73Vw6M/Tde9GmwibV8MoBSBJcwurXGg6B9yvd/Fvcw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/12.4.1/math.min.js" integrity="sha512-W5AfHbUHszM62m+dBEoG7SkMXrOW++rJVHqPQlilh2BiXtxjsEB2taHXCV8qW7WnTnX9xBMuyfmFLYCWkOgi2A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<link rel="stylesheet" href="./css/main.css">
 </head>
 <body>
-		<!-- Your code goes here-->
-
-	<!-- Add JS at the bottom of HTML file --> 
-        <script src="./js/main.js"></script>
+    <h1 class="heading">Spatial Multiplexing</h1>
+    <div class="contentBox">
+        <div class="leftBox">
+            <img src="./images/img1.png" alt="Image">
+        </div>
+        <div class="rightBox">
+            <form id="myForm">
+                <label for="nrInput">N<sub>r</sub></label>
+                <input type="number" placeholder="Enter Nr" id="nrInput">
+                <label for="ntInput">N<sub>t</sub></label>
+                <input type="number" placeholder="Enter Nt" id="ntInput">
+                <button type="submit" id="generateMatrixBtn">Channel Realization</button>
+            </form>
+        </div>
+    </div>
+    <div id="matrixContainer" class="matrix-container">
+        <p id="matrixHeader" class="matrix-header"></p> <!-- Matrix header -->
+        <table id="matrixTable" class="matrix"></table> <!-- Matrix table -->
+    </div>
+	<button style="display: none;" id="svdPrecodingBtn">SVD precoding</button>
+	<div id="svdContainer"></div> <!-- Hide the container initially -->	
+    <button style="display: none;" id="capacityBtn">Capacity Analysis</button>
+    <div id="capacityForm" style="display: none;">
+        <div class="contentBox">
+            <div class="leftBox">
+                <img src="./images/img2.png" alt="Image">
+            </div>
+            <div class="rightBox">
+                <!-- Capacity Analysis Form -->
+                <form id="capacityAnalysisForm">
+                        <label for="bInput">B</label>
+                        <input type="number" placeholder="Enter B" id="bInput">
+                        <label for="pTotInput">P<sub>tot</sub></label>
+                        <input type="number" placeholder="Enter total P" id="pTotInput">
+                        <label for="sigmaInput">σ <sub>n</sub>   </label>
+                        <input type="number" placeholder="Enter sigma" id="sigmaInput">
+                        <button type="submit" id="getCapacity">Get Capacity</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="./js/main.js"></script>
 </body>
 </html>
