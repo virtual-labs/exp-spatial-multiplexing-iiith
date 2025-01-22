@@ -1,12 +1,11 @@
-# THEORY
- Spatial multiplexing is a technique used in wireless communication systems to transmit multiple data streams simultaneously over the same radio frequency channel. Instead of using different frequencies or time slots, spatial multiplexing equips multiple antennas at both the transmitter and receiver to create independent communication links. By exploiting the spatial dimension, it allows multiplexing of multiple data streams and hence provides an increased transmission rate (or improved spectral efficiency), making it a fundamental technique in modern wireless communication 
+Spatial multiplexing is a technique used in wireless communication systems to transmit multiple data streams simultaneously over the same radio frequency channel. Instead of using different frequencies or time slots, spatial multiplexing equips multiple antennas at both the transmitter and receiver to create independent communication links. By exploiting the spatial dimension, it allows multiplexing of multiple data streams and hence provides an increased transmission rate (or improved spectral efficiency), making it a fundamental technique in modern wireless communication 
  standards like Multiple Input Multiple Output (MIMO) systems.
 
  
- Assuming the knowledge of the channel state information (CSI) at the transmitter, we can convert the MIMO channel into multiple non-interfering parallel SISO channels via singular value decomposition (SVD) based pre-processing and post-processing at the transmitter and receiver, respectively.
+Assuming the knowledge of the channel state information (CSI) at the transmitter, we can convert the MIMO channel into multiple non-interfering parallel SISO channels via singular value decomposition (SVD) based pre-processing and post-processing at the transmitter and receiver, respectively.
 
 
- Consider a MIMO system with $N_t$ antennas at the transmitter and $N_r$ antennas at the receiver. Let the signal received at the receiver be 
+Consider a MIMO system with $N_t$ antennas at the transmitter and $N_r$ antennas at the receiver. Let the signal received at the receiver be 
 ```math
 \mathbf{y} = \mathbf{Hx} + \mathbf{n},
 ```
