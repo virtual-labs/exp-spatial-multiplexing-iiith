@@ -1,5 +1,4 @@
-# THEORY
- Spatial multiplexing is a technique used in wireless communication systems to transmit multiple data streams simultaneously over the same radio frequency channel. Instead of using different frequencies or time slots, spatial multiplexing equips multiple antennas at both the transmitter and receiver to create independent communication links. By exploiting the spatial dimension, it allows multiplexing of multiple data streams and hence provides an increased transmission rate (or improved spectral efficiency), making it a fundamental technique in modern wireless communication 
+Spatial multiplexing is a technique used in wireless communication systems to transmit multiple data streams simultaneously over the same radio frequency channel. Instead of using different frequencies or time slots, spatial multiplexing equips multiple antennas at both the transmitter and receiver to create independent communication links. By exploiting the spatial dimension, it allows multiplexing of multiple data streams and hence provides an increased transmission rate (or improved spectral efficiency), making it a fundamental technique in modern wireless communication 
  standards like Multiple Input Multiple Output (MIMO) systems.
 
  
