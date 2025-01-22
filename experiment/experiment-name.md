@@ -1,1 +1,1 @@
-# SPATIAL MULTIPLEXING
+# Spatial Multiplexing
