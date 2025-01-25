@@ -2,39 +2,58 @@ Spatial multiplexing is a technique used in wireless communication systems to tr
  standards like Multiple Input Multiple Output (MIMO) systems.
 
  
- Assuming the knowledge of the channel state information (CSI) at the transmitter, we can convert the MIMO channel into multiple non-interfering parallel SISO channels via singular value decomposition (SVD) based pre-processing and post-processing at the transmitter and receiver, respectively.
+Assuming the knowledge of the channel state information (CSI) at the transmitter, we can convert the MIMO channel into multiple non-interfering parallel SISO channels via singular value decomposition (SVD) based pre-processing and post-processing at the transmitter and receiver, respectively.
 
 
- Consider a MIMO system with $N_t$ antennas at the transmitter and $N_r$ antennas at the receiver. Let the signal received at the receiver be 
-```math
+Consider a MIMO system with $N_t$ antennas at the transmitter and $N_r$ antennas at the receiver. Let the signal received at the receiver be 
+
+$$
+\begin{aligned}
 \mathbf{y} = \mathbf{Hx} + \mathbf{n},
-```
+\end{aligned}
+$$
+
  where $\mathbf{x}\in\mathbb{C}^{N_t\times1}$ is the transmitted signal vector, $\mathbf{H}\in\mathbb{C}^{N_r\times N_t}$ is the MIMO channel matrix, and $\mathbf{n}\in\mathbb{C}^{N_r\times1}$ is the AWGN noise with variance $\sigma_N^2$. Without loss of generality, we assume unit transmission power, i.e. $\mathbb{E}[\mathbf{x}^T\mathbf{x}]=1$.
  From matrix theory, the channel matrix can be decomposed using  SVD as
-```math
+
+$$
+\begin{aligned}
  \mathbf{H} = \mathbf{USV}^H
-```
+\end{aligned}
+$$
+
  where $\mathbf{U}\in\mathbb{C}^{N_r\times N_r}$ and $\mathbf{V}\in\mathbb{C}^{N_t\times N_t}$ are unitary matrices (i.e $\mathbf{U}^H\mathbf{U}=1$ and $\mathbf{V}^H\mathbf{V}=1)$ and $\mathbf{S}\in\mathbb{C}^{N_r\times N_t}$ is a diagonal matrix with singular values as its entries. There exist $R$ singular values where $R$ is the rank of the matrix H. The received signal can now be written as
-```math
+
+$$
+\begin{aligned}
  \mathbf{y} = \mathbf{USV}^H\mathbf{x} + \mathbf{n}
-```
+\end{aligned}
+$$
+
  1) Pre-processing at the transmitter
 
      a) Let $\mathbf{x}=\mathbf{V\bar{x}}$
 
      b) The received signal is now modified as
 
-```math
+$$
+\begin{aligned}
 \mathbf{y} = \mathbf{US}\mathbf{\bar{x}} + \mathbf{n}
-```
+\end{aligned}
+$$
+
  2) Post-processing at the receiver
 
     a) Let $\mathbf{y}=\mathbf{U}^H\mathbf{\bar{y}}$
 
     b) The received signal is now modified as 
-```math
+    
+$$
+\begin{aligned}
 \mathbf{\bar{y}} = \mathbf{S}\mathbf{\bar{x}} + \mathbf{\bar{n}}
-```
+\end{aligned}
+$$
+
  It can be observed from \eqref{final} that The transmit precoding and receiver shaping transform the MIMO channel into $R$ non-interfering parallel single-input single-output (SISO) channels with input $\mathbf{\bar{x}}$ and output $\mathbf{\bar{y}}$.
 <img src="./images/SystemModel.png">
 
@@ -43,7 +62,11 @@ Spatial multiplexing is a technique used in wireless communication systems to tr
 
 ## MIMO Capacity
  The capacity of a MIMO communication system can be expressed as
-```math
+
+$$
+\begin{aligned}
 \mathrm{C} = \sum_{i=1}^{R}B\log_2\left(1+\frac{P_ta_i^2}{R\sigma_n^2}\right),
-```
+\end{aligned}
+$$
+
  where $P_t$ is the total transmission power and $\sigma_n^2$ is the noise power.
