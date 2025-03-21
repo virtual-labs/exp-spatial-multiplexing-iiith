@@ -1,0 +1,7 @@
+
+/home/runner/work/exp-spatial-multiplexing-iiith/exp-spatial-multiplexing-iiith/experiment/simulation/js/main.js
+   96:17  warning  'numeric' is not defined  no-undef
+  102:25  warning  'math' is not defined     no-undef
+
+✖ 2 problems (0 errors, 2 warnings)
+
