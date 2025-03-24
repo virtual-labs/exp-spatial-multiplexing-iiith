@@ -2,37 +2,66 @@
   "version": 2.0,
   "questions": [
     {
-      "question": "This is a Sample Question 1?",
+      "question": "Given matrix product H = USV',How many independent parallel streams can be formed?",
+      "matrices": [
+        {
+          "matrix": [
+            [1, 1],
+            [1, -1]
+          ],
+          "name": "U"
+        },
+        {
+          "matrix": [
+            [5, 0, 0],
+            [0, 3, 0]
+          ],
+          "name": "S"
+        },
+        {
+          "matrix": [
+            [1, 1, 0],
+            [1, -1, 4],
+            [2, -2, 1]
+          ],
+          "name": "V'"
+        }
+      ],
       "answers": {
-        "a": "answer1",
-        "b": "answer2",
-        "c": "answer3",
-        "d": "answer4"
+        "a": "1",
+        "b": "5",
+        "c": "3",
+        "d": "2"
       },
       "explanations": {
-        "a": "Explanation 1  <a href='www.google.com'>here</a>",
-        "b": "Explanation 2",
-        "c": "Explanation 2",
-        "d": "Explanation 2"
+        "a": "The number of independent streams that can be fromed = Rank of the matrix i.e number of eigenvalues",
+        "b": "The number of independent streams that can be fromed = Rank of the matrix i.e number of eigenvalues and not the value of the eigen value",
+        "c": "The number of independent streams that can be fromed = Rank of the matrix i.e number of eigenvalues and not the value of the eigen value",
+        "d": "Perfect! The matrix has 2 eigen values, hence can have two independent parallel streams "
       },
-      "correctAnswer": "a",
+      "correctAnswer": "d",
       "difficulty": "beginner"
     },
     {
-      "question": "This is a Sample Question 2?",
+      "question": "What is the capacity of the above given channel?",
+      "parameters": {
+        "bandwidth": "10 KHz",
+        "transmitter_power": "10 dB",
+        "noise_variance": 1
+      },
       "answers": {
-        "a": "answer1",
-        "b": "answer2",
-        "c": "answer3",
-        "d": "answer4"
+        "a": "8.7",
+        "b": "125.01",
+        "c": "87",
+        "d": "12.501"
       },
       "explanations": {
-        "a": "Explanation 1  <a href='www.google.com'>here</a>",
-        "b": "Explanation 2",
-        "c": "Explanation 2",
-        "d": "Explanation 2"
+        "a": "In the capacity formula, You have missed multiplying with the bandwidth and squaring the eigenvalues",
+        "b": "Perfect!",
+        "c": "In the capacity formula, You have missed squaring the eigenvalues",
+        "d": "In the capacity formula, You have missed multiplying with the bandwidth"
       },
-      "correctAnswer": "c",
+      "correctAnswer": "b",
       "difficulty": "beginner"
     }
   ]
