@@ -1,1 +1,1 @@
-## Experiment name
+# Spatial Multiplexing
