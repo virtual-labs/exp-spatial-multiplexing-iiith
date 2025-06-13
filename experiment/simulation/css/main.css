@@ -424,6 +424,7 @@ th{
     border-radius: 10px;
     padding: 20px;
     max-width: 1200px;
+    min-width: 250px;
   
   }
   
@@ -433,6 +434,7 @@ th{
     border: 2px solid #98CB3B;
     border-radius: 10px;
     padding: 20px;
+    min-width: 500px;
   
   }
   
@@ -443,6 +445,7 @@ th{
     border: 2px solid #98CB3B;
     border-radius: 10px;
     padding: 20px;
+ 
   
   
   }
@@ -685,4 +688,119 @@ table.matrix td {
     .main-layout {
         flex-direction: column;
     }
+    .columns-container {
+      padding: 15px;
+      gap: 12px;
+    }
+    
+    .left-column, .right-column {
+      margin: 0;
+    }
 }
+@media (max-width: 992px) {
+  .columns-container {
+    flex-direction: column;
+    padding: 10px;
+  }
+  
+  .left-column, .center-column, .right-column {
+    flex: 1 0 auto;
+    width: 100%;
+    margin: 0 0 15px 0;
+    min-width: 0;
+  }
+  
+  .simulation-container {
+    min-height: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .columns-container {
+    padding: 8px;
+  }
+  
+  .left-column, .center-column, .right-column {
+    padding: 15px;
+  }
+  
+  .simulation-container {
+    min-height: 350px;
+    gap: 10px;
+  }
+  
+  .column {
+    min-height: 350px;
+  }
+  
+  button {
+    padding: 10px 16px;
+  }
+}
+
+@media (max-width: 576px) {
+  .columns-container {
+    padding: 5px;
+  }
+  
+  .left-column, .center-column, .right-column {
+    padding: 12px;
+    margin-bottom: 10px;
+  }
+  
+  .simulation-container {
+    min-height: 300px;
+    gap: 5px;
+  }
+  
+  .column {
+    min-height: 300px;
+  }
+  
+  .antenna {
+    width: 40px;
+    height: 40px;
+    margin: 5px 0;
+  }
+  
+  input {
+    padding: 6px;
+    font-size: 0.9rem;
+  }
+  
+  button {
+    padding: 8px 14px;
+    font-size: 0.9rem;
+  }
+  
+  .metric {
+    padding: 8px 10px;
+    font-size: 0.9rem;
+  }
+  
+  .metric span {
+    font-size: 1rem;
+  }
+}
+
+/* Additional responsiveness for the simulation elements */
+.simulation-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+canvas#signalCanvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* Improve table responsiveness */
+table.matrix {
+  max-width: 100%;
+}
+
+.matrix-display {
+  width: 100%;
+  overflow-x: auto;
+}
+
