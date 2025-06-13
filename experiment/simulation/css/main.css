@@ -32,7 +32,7 @@ html{
 .max-width{
     max-width: 3000px;
     margin: auto;
-    min-width:1800px;
+    min-width:inherit;
 }
 
 section .title{
