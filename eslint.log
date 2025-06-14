@@ -1,0 +1,12 @@
+
+/home/runner/work/exp-spatial-multiplexing-iiith/exp-spatial-multiplexing-iiith/experiment/simulation/js/main.js
+    4:9   warning  'generateMatrix' is not defined                  no-undef
+   13:9   warning  'displayCapacityForm' is not defined             no-undef
+   57:10  warning  'simulate' is defined but never used             no-unused-vars
+  160:18  warning  'numeric' is not defined                         no-undef
+  171:21  warning  'numeric' is not defined                         no-undef
+  179:23  warning  'numeric' is not defined                         no-undef
+  230:10  warning  'visualizeEigenbeams' is defined but never used  no-unused-vars
+
+✖ 7 problems (0 errors, 7 warnings)
+
