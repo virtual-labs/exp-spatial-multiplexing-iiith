@@ -1,133 +1,781 @@
-body {
-    font-family: Arial, sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Ubuntu:wght@400;500;700&display=swap');
+
+
+*{
     margin: 0;
     padding: 0;
-    background-color: #f5f5f5;
-}
-
-.heading {
-    text-align: center;
-    margin-top: 20px;
-    color: #333;
-}
-
-.contentBox {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start; /* Align items to the top */
-    margin-top: 20px;
-}
-
-.leftBox,
-.rightBox {
-    flex: 1;
-    padding: 20px;
     box-sizing: border-box;
+    text-decoration: none;
+}
+html{
+    scroll-behavior: smooth;
 }
 
-.leftBox {
-    text-align: center;
+::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-track {
+    background: #FFFFFF;
+}
+::-webkit-scrollbar-thumb {
+    background: #888;
 }
 
-.rightBox {
-    background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
 
-form {
-    display: flex;
-    flex-direction: column;
+/* ---------------------------------- Laptops and Desktops ------------------------- */
+
+@media (min-width: 1400px){
+
+.max-width{
+    max-width: 3000px;
+    margin: auto;
+    min-width:inherit;
 }
 
-label {
-    margin-bottom: 5px;
-    color: #333;
+section .title{
+  position: relative;
+  text-align: center;
+  color: #000000;
+  font-size: 40px;
+  font-weight: 500;
+  margin-top: 5%;
+  font-family: 'Ubuntu', sans-serif;
 }
 
-input[type="number"],
-button {
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    font-size: 14px;
+.fre{
+  display: flex;
+  color: #000000; /* Color of Name, and moving text in first page*/
+  background-size: cover;
+  background-attachment: fixed;
+  font-family: 'Ubuntu', sans-serif;
 }
 
-button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    cursor: pointer;
+.fill1 {
+  position: relative;
+  margin-top: 10%;
+  margin-bottom: 10%;
+  top: 0%;
+  left: 0%;
+  transform: translate(-50%, -50%);
+  float: left;
 }
 
-button:hover {
-    background-color: #45a049;
+.fill1 {
+  position: relative;
+  margin-top: 10px;
 }
 
-/* Apply basic styling to the matrix */
-
-.matrixLabel{
-    margin-top: 20px;
-    text-align: center;
-    color: #333;
-    font-size: large;
-    font-weight: bold;
-
+.radio-container {
+  display: flex;
+  align-items: center;
 }
 
-.matrix-container {
-    margin-top: 20px;
-    text-align: center; /* Center the content */
-    background-color: rgb(240, 240, 191);
-    display: none; /* Initially hide the container */
+.form {
+  margin-right: 20px;
 }
 
+input[type="radio"] {
+  margin-right: 5px;
+}
+
+
+/* Matrix Styles */
 .matrix {
-    border-collapse: collapse;
-    display: inline-block;
-    margin: 0 auto; /* Center the table */
-    padding: 10px;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-family: 'Courier New', Courier, monospace;
 }
 
 .matrix td {
-    border: 1px solid #000;
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  text-align: center;
+}
+
+.matrix tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.matrix tr:hover {
+  background-color: #e6e6e6;
+}
+
+
+}
+
+/* ----------------------------------------- Big Tabs ------------------------------------------ */
+
+@media (max-width: 1200px) and (min-width: 768px){
+
+  
+.max-width{
+    max-width: 1024px;
+    padding: 0 40px;
+    margin: auto;
+}
+  
+section .title{
+  position: relative;
+  text-align: center;
+  color: #000000;
+  font-size: 40px;
+  font-weight: 500;
+  margin-top: 10%;
+  width: 80%;
+  font-family: 'Ubuntu', sans-serif;
+}
+  
+.fre{
+  display: flex;
+  color: #000000; /* Color of Name, and moving text in first page*/
+  background-size: cover;
+  background-attachment: fixed;
+  font-family: 'Ubuntu', sans-serif;
+}
+  
+.fill1 {
+    position: relative;
+    margin-left: 25%;
+    margin-top: 20%;
+    top: 0%;
+    left: 0%;
+    transform: translate(-50%, -50%);
+    float: left;
+}
+
+.form1{
+  position: relative;
+  margin-left: -20%;
+  margin-top: 30%;
+  margin-bottom: 20%;
+}
+
+.figureLast{
+    margin-left: -30%;
+}
+  
+}
+
+/* ----------------------------------------- Small Tabs ------------------------------------------ */
+
+@media (max-width: 768px) and (min-width: 720px){
+
+  
+.max-width{
+  max-width: 1024px;
+  padding: 0 40px;
+  margin: auto;
+}
+
+section .title{
+position: relative;
+text-align: center;
+color: #000000;
+font-size: 40px;
+font-weight: 500;
+margin-top: 10%;
+font-family: 'Ubuntu', sans-serif;
+}
+
+.fre{
+display: flex;
+color: #000000; /* Color of Name, and moving text in first page*/
+background-size: cover;
+background-attachment: fixed;
+font-family: 'Ubuntu', sans-serif;
+}
+
+.fill1 {
+  position: relative;
+  margin-left: 25%;
+  margin-top: 20%;
+  top: 0%;
+  left: 0%;
+  transform: translate(-50%, -50%);
+  float: left;
+}
+
+.form1{
+  position: relative;
+  margin-left: 20%;
+  margin-top: 30%;
+  margin-bottom: 20%;
+}
+
+.figureLast{
+  margin-left: 0%;
+}
+
+}
+
+/* ----------------------------------------------- Large Phones ---------------------------------- */
+
+@media (max-width: 1000px) and (min-width: 420px){
+
+  
+.max-width{
+    max-width: 1000px;
+    margin: auto;
+}
+  
+section .title{
+  position: relative;
+  text-align: center;
+  color: #000000;
+  font-size: 40px;
+  font-weight: 500;
+  margin-top: 10%;
+  width: 80%;
+  font-family: 'Ubuntu', sans-serif;
+}
+  
+.fre{
+  display: flex;
+  color: #000000; /* Color of Name, and moving text in first page*/
+  background-size: cover;
+  background-attachment: fixed;
+  font-family: 'Ubuntu', sans-serif;
+}
+
+.fill1 {
+    position: relative;
+    margin-left: 35%;
+    margin-top: 20%;
+    top: 0%;
+    left: 0%;
+    transform: translate(-50%, -50%);
+    float: left;
+}
+
+.form1{
+  position: relative;
+  margin-left: 20%;
+  margin-top: 30%;
+  margin-bottom: 20%;
+}
+
+.figureLast{
+    margin-left: 0%;
+}
+
+}
+
+/* ------------------------------------- Small Phones ------------------------------------ */
+
+@media (max-width: 420px){
+
+  
+.max-width{
+    max-width: 460px;
+    padding: 0 40px;
+    margin: auto;
+}
+ 
+section .title{
+  position: relative;
+  text-align: center;
+  color: #000000;
+  font-size: 40px;
+  font-weight: 500;
+  margin-top: 10%;
+  width: 80%;
+  font-family: 'Ubuntu', sans-serif;
+}
+  
+.fre{
+  display: flex;
+  color: #000000; /* Color of Name, and moving text in first page*/
+  background-size: cover;
+  background-attachment: fixed;
+  font-family: 'Ubuntu', sans-serif;
+}
+
+.fill1 {
+    position: relative;
+    margin-left: 30%;
+    margin-top: 20%;
+    top: 0%;
+    left: 0%;
+    transform: translate(-50%, -50%);
+    float: left;
+}
+
+
+  
+.form1{
+  position: relative;
+  margin-left: 0%;
+  margin-top: 30%;
+  margin-bottom: 20%;
+}
+
+.figureLast{
+    margin-left: 0%;
+}
+  
+}
+
+/* ----------------------------------------- Plot Button -----------------------------------------------------*/
+
+.buttonTotal {
+  display: block;
+  margin-bottom: 40px;
+  font-size: 100%;
+  position: relative;
+  padding: 10px 20px;
+  background-color: #98CB3B;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  margin-left: 0%;
+  margin-top: 10%;
+}
+
+.buttonTotal:hover {
+  background-color: #2C9AD1;
+  transform: scale(1.05);
+}
+
+/* ---------------------------------------------------- Tabs -------------------------------------------- */
+
+.tab {
+  overflow: hidden;
+  border: 1px solid #FFFFFF;
+  background-color: #FFFFFF;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+  border-style: solid;
+  border-radius: 10px;
+  border-color: #98CB3B;
+  color: #176696;
+}
+
+
+
+/* ------------------------------------------ Table ------------------------------------ */
+
+table,td,tr {
+        padding: 10%;
+        border: 3px solid black;
+        border-collapse: collapse;
+}
+
+th{
+  border: 3px solid black;
+  background-color: #AAA;
+}
+
+/* ------------------------------------------- Image ----------------------------------- */
+
+.expandable-figure {
+  max-width: 100%;
+  cursor: pointer;
+  margin-left: -5%;
+  margin-top: 10%;
+}
+
+.expanded {
+  max-width: none;
+}
+
+/* ------------------------------------------- Image ----------------------------------- */
+
+
+.columns-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px; /* Adjust as needed */
+  flex-wrap: wrap;
+  gap: 15px; /* Use gap for consistent spacing */
+}
+.left-column {
+    flex: 1; /* Reduced from 4 to make it smaller */
+    margin-right: 7px;
+    background-color: #f0f0f0;
+    border: 2px solid #98CB3B;
+    border-radius: 10px;
+    padding: 20px;
+  
+    min-width: 250px;
+  
+  }
+  
+  .center-column {
+    flex: 2; /* Increased ratio for wider center */
+    background-color: #ffffff;
+    border: 2px solid #98CB3B;
+    border-radius: 10px;
+    padding: 20px;
+    min-width: 500px;
+  
+  }
+  
+  .right-column {
+    flex: 1; /* Reduced from 3 to make it smaller */
+    margin-left: 7px;
+    background-color: #f0f0f0;
+    border: 2px solid #98CB3B;
+    border-radius: 10px;
+    padding: 20px;
+ 
+  
+  
+  }
+
+
+
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2980b9;
+    --accent-color: #e74c3c;
+    --light-bg: #f8f9fa;
+    --dark-bg: #343a40;
+    --text-color: #333;
+    --light-text: #f8f9fa;
+    --border-color: #dee2e6;
+    --shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+
+
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 2.2rem;
+    color: var(--primary-color);
+}
+
+.header p {
+    margin-top: 10px;
+    font-size: 1.1rem;
+    color: #666;
+}
+
+
+
+#input-section {
+    flex: 1 1 20%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+#simulation-section {
+    flex: 1 1 50%;
+    position: relative;
+}
+#output-section {
+    flex: 1 1 30%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#input-section h3 {
+    text-align: center;
+    color: var(--primary-color);
+    margin-top: 0;
+}
+.control-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+label {
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+input {
+    width: 100%;
+    box-sizing: border-box;
     padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
     text-align: center;
+    font-size: 1rem;
+    background-color: #f0f0f0;
+}
+button {
+    padding: 12px 20px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background-color 0.3s, transform 0.1s;
+    width: 100%;
+}
+button:hover {
+    background-color: var(--secondary-color);
+}
+button:active {
+    transform: translateY(2px);
+}
+button.accent {
+    background-color: var(--accent-color);
+}
+button.accent:hover {
+    background-color: #c0392b;
+}
+button:disabled {
+    background-color: #95a5a6;
+    cursor: not-allowed;
 }
 
-/* Position SVD precoding button */
-#svdPrecodingBtn ,
-#capacityBtn{
-    margin-top: 20px;
-    display: block;
-    margin-left: auto; /* Move the button to the right */
-    margin-right: auto; /* Move the button to the right */
-}
-
-.matrix-container {
-    margin-top: 20px;
-    text-align: center;
-}
-
-.matrix-wrapper {
-    display: inline-block;
-    margin: 10px;
-    vertical-align: top;
-}
-
-#svdContainer {
+.simulation-container {
     display: flex;
     justify-content: space-around;
-    margin-top: 20px;
-    text-align: center;
-    background-color: rgb(240, 240, 191);
+    gap: 20px;
+    position: relative;
+    min-height: 450px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+.column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    min-height: 400px;
+}
+.column-label {
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: var(--primary-color);
+}
+.antenna {
+    width: 50px;
+    height: 50px;
+    margin: 7.5px 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><g stroke='black' stroke-width='5' fill='none' stroke-linecap='round'><circle cx='50' cy='50' r='25'/><circle cx='50' cy='50' r='15'/><circle cx='50' cy='50' r='5'/><line x1='50' y1='75' x2='50' y2='90'/><line x1='35' y1='90' x2='65' y2='90'/></g></svg>");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    transition: transform 0.3s;
+}
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    pointer-events: none;
+    width: 100%;
+    height: 100%;
 }
 
-.capacityResult{
-    display: flex;
-    justify-content: center;
-    background-color: rgb(240, 240, 191);
-    margin: 10px 0px 0 0px;
-    font-weight: 550;
+.simulation-footer {
+    text-align: center;
 }
+.info-block {
+    background-color: rgba(52, 152, 219, 0.1);
+    border-left: 5px solid var(--primary-color);
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 0 4px 4px 0;
+}
+.error-message {
+    color: #e74c3c;
+    text-align: center;
+    font-weight: 500;
+    padding: 10px;
+    margin: 10px 0;
+    display: none;
+}
+
+#output-section h3 {
+    text-align: center;
+    color: var(--primary-color);
+    margin: 0 0 10px 0;
+}
+.matrix-display, .metrics-display {
+    margin-bottom: 15px;
+    overflow-x: auto;
+}
+table.matrix {
+    border-collapse: collapse;
+    margin: 0 auto;
+    font-variant-numeric: tabular-nums;
+}
+table.matrix td {
+    border: 1px solid var(--border-color);
+    padding: 6px 10px;
+    text-align: center;
+    min-width: 50px;
+}
+.metric-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.metric {
+    padding: 10px 15px;
+    background-color: var(--light-bg);
+    border-radius: 6px;
+    font-weight: 500;
+    text-align: center;
+    flex-grow: 1;
+}
+.metric span {
+    font-weight: bold;
+    color: var(--primary-color);
+    display: block;
+    font-size: 1.2rem;
+    margin-top: 5px;
+}
+
+@media (max-width: 1200px) {
+    .main-layout {
+        flex-direction: column;
+    }
+    .columns-container {
+      padding: 15px;
+      gap: 12px;
+    }
+    
+    .left-column, .right-column {
+      margin: 0;
+    }
+}
+@media (max-width: 992px) {
+  .columns-container {
+    flex-direction: column;
+    padding: 10px;
+  }
+  
+  .left-column, .center-column, .right-column {
+    flex: 1 0 auto;
+    width: 100%;
+    margin: 0 0 15px 0;
+    min-width: 0;
+  }
+  
+  .simulation-container {
+    min-height: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .columns-container {
+    padding: 8px;
+  }
+  
+  .left-column, .center-column, .right-column {
+    padding: 15px;
+  }
+  
+  .simulation-container {
+    min-height: 350px;
+    gap: 10px;
+  }
+  
+  .column {
+    min-height: 350px;
+  }
+  
+  button {
+    padding: 10px 16px;
+  }
+}
+
+@media (max-width: 576px) {
+  .columns-container {
+    padding: 5px;
+  }
+  
+  .left-column, .center-column, .right-column {
+    padding: 12px;
+    margin-bottom: 10px;
+  }
+  
+  .simulation-container {
+    min-height: 300px;
+    gap: 5px;
+  }
+  
+  .column {
+    min-height: 300px;
+  }
+  
+  .antenna {
+    width: 40px;
+    height: 40px;
+    margin: 5px 0;
+  }
+  
+  input {
+    padding: 6px;
+    font-size: 0.9rem;
+  }
+  
+  button {
+    padding: 8px 14px;
+    font-size: 0.9rem;
+  }
+  
+  .metric {
+    padding: 8px 10px;
+    font-size: 0.9rem;
+  }
+  
+  .metric span {
+    font-size: 1rem;
+  }
+}
+
+/* Additional responsiveness for the simulation elements */
+.simulation-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+canvas#signalCanvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* Improve table responsiveness */
+table.matrix {
+  max-width: 100%;
+}
+
+.matrix-display {
+  width: 100%;
+  overflow-x: auto;
+}
+
