@@ -15,20 +15,24 @@
 <body>
 	
  
-
-
 		<section class="fre" id="TASK1">
 			<div class="max-width">
 				<h2 class="title">Spatial Multiplexing simulation</h2>
 				<div class="columns is-centered">
-					<div class="v-collapsible-instruction-container v-instruction-container">
-						<div class="v-collapsible is-size-5">Instructions</div>
-						<div class="v-content" style="text-align: left; padding-left: 10%; padding-right: 10%;">
-							
-							
-						
-						</div>
-					</div>
+                    <div class="v-collapsible-instruction-container v-instruction-container">
+                        <div class="v-collapsible is-size-5">Instructions</div>
+                        <div class="v-content" style="text-align: left; padding-left: 10%; padding-right: 10%;">
+                            <ol>
+                                <li><strong>Getting Started:</strong> This simulation demonstrates spatial multiplexing in MIMO wireless systems.</li>
+                                <li><strong>Simulate Channel:</strong> Click the "Simulate Channel" button to generate a random channel matrix between transmit and receive antennas.</li>
+                                <li><strong>Analyze Results:</strong> After simulation, examine the channel matrix displayed in the output section.</li>
+                                <li><strong>Perform SVD:</strong> Click "Perform SVD" to decompose the channel matrix and reveal its eigenbeams (spatial modes).</li>
+                                <li><strong>Visualize Eigenbeams:</strong> Click this button to see how the signal propagates through different spatial paths.</li>
+                                <li><strong>Interpret Metrics:</strong> The rank indicates the number of usable spatial streams, while capacity shows the maximum data rate.</li>
+                                <li><strong>Reset:</strong> Click "Reset" to start over with a new simulation.</li>
+                            </ol>
+                        </div>
+                    </div>
 				</div>
 				<div class="columns-container">
 					<div class="left-column box">
@@ -97,9 +101,10 @@
 		</section>
 	
 
-	<script src="./js/main.js"></script>
-	<script src="https://cdn.jsdelivr.net/gh/virtual-labs/virtual-style@0.0.8-b/js/script.js"></script>
+
+
+<script src="./js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/virtual-labs/virtual-style@0.0.8-b/js/script.js"></script>
 
 </body>
-
 </html>
