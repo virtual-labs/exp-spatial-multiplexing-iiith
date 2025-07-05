@@ -350,35 +350,35 @@ section .title{
 
 /* ---------------------------------------------------- Tabs -------------------------------------------- */
 
-.tab {
+/* .tab {
   overflow: hidden;
   border: 1px solid #FFFFFF;
   background-color: #FFFFFF;
 }
 
 /* Style the buttons inside the tab */
-.tab button {
+/* .tab button {
   background-color: inherit;
   border: none;
   outline: none;
   cursor: pointer;
   padding: 14px 16px;
   font-size: 17px;
-}
+} */
 
 /* Change background color of buttons on hover */
-.tab button:hover {
+/* .tab button:hover {
   background-color: #ddd;
-}
+} */
 
 /* Create an active/current tablink class */
-.tab button.active {
+/* .tab button.active {
   background-color: #ccc;
   border-style: solid;
   border-radius: 10px;
   border-color: #98CB3B;
   color: #176696;
-}
+} */ 
 
 
 
@@ -559,19 +559,21 @@ button:disabled {
 
 .simulation-container {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
+    align-items: center;
     gap: 20px;
     position: relative;
     min-height: 450px;
     width: 100%;
-    margin-bottom: 20px;
+    margin: 0 auto 20px;
 }
 .column {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-around;
+    justify-content: center;
     min-height: 400px;
+    flex: 1;
 }
 .column-label {
     font-weight: bold;
@@ -592,6 +594,8 @@ canvas {
     position: absolute;
     top: 0;
     left: 0;
+    right: 0;
+    margin: 0 auto;
     z-index: 0;
     pointer-events: none;
     width: 100%;
@@ -748,34 +752,234 @@ table.matrix td {
     font-size: 0.9rem;
   }
   
-  .metric {
-    padding: 8px 10px;
+  table.matrix td {
+    padding: 4px 6px;
+    min-width: 40px;
     font-size: 0.9rem;
   }
   
-  .metric span {
-    font-size: 1rem;
+  section .title {
+    font-size: 30px;
+    margin: 5% auto;
+    width: 90%;
   }
 }
 
-/* Additional responsiveness for the simulation elements */
-.simulation-container {
-  width: 100%;
-  overflow-x: auto;
+/* Extra small screens (phones) */
+@media (max-width: 375px) {
+  .max-width {
+    padding: 0 15px;
+  }
+  
+  .columns-container {
+    padding: 3px;
+    gap: 10px;
+  }
+  
+  .left-column, .center-column, .right-column {
+    padding: 8px;
+    margin-bottom: 8px;
+    min-width: 0;
+  }
+  
+  .simulation-container {
+    min-height: 260px;
+    gap: 3px;
+  }
+  
+  .column {
+    min-height: 260px;
+  }
+  
+  .antenna {
+    width: 35px;
+    height: 35px;
+    margin: 4px 0;
+  }
+  
+  input {
+    padding: 4px;
+    font-size: 0.85rem;
+  }
+  
+  button {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+  }
+  
+  .header h1 {
+    font-size: 1.8rem;
+  }
+  
+  .header p {
+    font-size: 0.95rem;
+  }
+  
+  section .title {
+    font-size: 24px;
+    margin: 5px auto;
+    width: 95%;
+  }
+  
+  .control-group {
+    margin-bottom: 8px;
+  }
+  
+  label {
+    font-size: 0.9rem;
+  }
+  
+  .metric {
+    padding: 6px 8px;
+    font-size: 0.8rem;
+  }
+  
+  .metric span {
+    font-size: 0.9rem;
+  }
 }
 
-canvas#signalCanvas {
-  width: 100%;
-  height: 100%;
+/* Very small screens (320px width) */
+@media (max-width: 320px) {
+  .max-width {
+    padding: 0 10px;
+  }
+  
+  .columns-container {
+    padding: 2px;
+    gap: 8px;
+  }
+  
+  .left-column, .center-column, .right-column {
+    padding: 6px;
+    margin-bottom: 6px;
+  }
+  
+  section .title {
+    font-size: 20px;
+    width: 100%;
+    margin: 5px auto;
+  }
+  
+  .simulation-container {
+    min-height: 220px;
+  }
+  
+  .column {
+    min-height: 220px;
+  }
+  
+  .antenna {
+    width: 30px;
+    height: 30px;
+    margin: 3px 0;
+  }
+  
+  button {
+    padding: 5px 8px;
+    font-size: 0.8rem;
+  }
+  
+  h3 {
+    font-size: 1.1rem;
+  }
+  
+  .column-label {
+    font-size: 0.85rem;
+  }
+  
+  table.matrix td {
+    padding: 3px 4px;
+    min-width: 30px;
+    font-size: 0.8rem;
+  }
+  
+  .info-block {
+    padding: 10px;
+    margin: 10px 0;
+    font-size: 0.85rem;
+  }
+  
+  .control-group {
+    margin-bottom: 6px;
+  }
+  
+  #input-section, #output-section {
+    gap: 10px;
+  }
 }
 
-/* Improve table responsiveness */
-table.matrix {
-  max-width: 100%;
+/* Ultra small screens (300px width) */
+@media (max-width: 300px) {
+  .max-width {
+    padding: 0 5px;
+  }
+  
+  .columns-container {
+    padding: 2px;
+    gap: 5px;
+  }
+  
+  .left-column, .center-column, .right-column {
+    padding: 5px;
+    margin-bottom: 5px;
+  }
+  
+  section .title {
+    font-size: 18px;
+  }
+  
+  .simulation-container {
+    min-height: 200px;
+  }
+  
+  .column {
+    min-height: 200px;
+  }
+  
+  .antenna {
+    width: 25px;
+    height: 25px;
+    margin: 2px 0;
+  }
+  
+  button {
+    padding: 4px 6px;
+    font-size: 0.75rem;
+    margin-bottom: 5px;
+  }
+  
+  h3 {
+    font-size: 1rem;
+  }
+  
+  .info-block {
+    padding: 8px;
+  }
 }
 
+/* Improve matrix display on all screen sizes */
 .matrix-display {
   width: 100%;
   overflow-x: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+table.matrix {
+  margin: 0 auto;
+  font-size: 0.9rem;
+}
+
+/* Ensure buttons have proper spacing */
+button {
+  margin-bottom: 10px;
+}
+
+.info-block {
+  width: 100%;
+  box-sizing: border-box;
 }
 
