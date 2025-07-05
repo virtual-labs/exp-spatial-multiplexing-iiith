@@ -800,16 +800,35 @@ table.matrix td {
   .simulation-container {
     min-height: 260px;
     gap: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   
   .column {
     min-height: 260px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
   
   .antenna {
     width: 35px;
     height: 35px;
-    margin: 4px 0;
+    margin: 4px auto; /* Changed to add auto for horizontal centering */
+    display: block;
+  }
+  
+  canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    width: 100%;
+    height: 100%;
   }
   
   input {
@@ -879,16 +898,19 @@ table.matrix td {
   
   .simulation-container {
     min-height: 220px;
+    justify-content: center;
+    align-items: center;
   }
   
   .column {
     min-height: 220px;
+    align-items: center;
   }
   
   .antenna {
     width: 30px;
     height: 30px;
-    margin: 3px 0;
+    margin: 3px auto; /* Changed to add auto for horizontal centering */
   }
   
   button {
@@ -947,16 +969,22 @@ table.matrix td {
   
   .simulation-container {
     min-height: 200px;
+    justify-content: center;
+    align-items: center;
   }
   
   .column {
     min-height: 200px;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
   
   .antenna {
     width: 25px;
     height: 25px;
-    margin: 2px 0;
+    margin: 2px auto; /* Changed to add auto for horizontal centering */
   }
   
   button {
