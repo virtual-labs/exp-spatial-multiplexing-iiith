@@ -55,14 +55,20 @@ $$
 $$
 
 It can be observed from \eqref{final} that The transmit precoding and receiver shaping transform the MIMO channel into $R$ non-interfering parallel single-input single-output (SISO) channels with input $\mathbf{\bar{x}}$ and output $\mathbf{\bar{y}}$.
+<br>
+<br>
+<p align="center">
 <img src="./images/SystemModel.png">
+</p>
 
- The conversion process is summarized in the below figure.
- 
+The conversion process is summarized in the below figure.
+
+<p align="center">
 <img src="./images/svd.png">
+</p>
 
 ## MIMO Capacity
- The capacity of a MIMO communication system can be expressed as
+The capacity of a MIMO communication system can be expressed as
 
 $$
 \begin{aligned}
