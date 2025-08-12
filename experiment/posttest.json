@@ -1,70 +1,141 @@
-[
-  {
-    "question": "After pre-processing and post-processing using SVD, what happens to the MIMO system?",
-    "options": [
-      "It works as an effective combining technique providing diversity gain",
-      "It decomposes the channel into rank(H) parallel independent channels",
-      "Since it involves multiplying input and output by a weight vector, it leads to increased power (array gain)",
-      "None of the above"
-    ],
-    "answer": "It decomposes the channel into rank(H) parallel independent channels",
-    "explanation": "SVD diagonalizes the MIMO channel into rank(H) orthogonal subchannels, each behaving as an independent SISO link."
-  },
-  {
-    "question": "Given H = [[1, 1], [1, -1]] × [[5, 0, 0], [0, 3, 0]] × [[1, 1, 0], [1, -1, 4], [2, -2, 1]], how many independent parallel streams can be formed?",
-    "options": ["1", "2", "3", "Cannot be determined from given info"],
-    "answer": "2",
-    "explanation": "The middle diagonal matrix shows two non-zero singular values, so the channel rank is 2, allowing 2 independent streams."
-  },
-  {
-    "question": "Find the rank of the matrix [[1, 2, 3], [0, 2, 2], [1, 4, 5]].",
-    "options": ["1", "2", "3", "None of the above"],
-    "answer": "2",
-    "explanation": "Row 3 is a linear combination of Row 1 and Row 2, so there are only 2 independent rows."
-  },
-  {
-    "question": "Find the rank of the matrix [[1, 0, 0], [0, 1, 0], [0, 0, 1]].",
-    "options": ["1", "2", "3", "None of the above"],
-    "answer": "3",
-    "explanation": "This is the 3×3 identity matrix, which has full rank (rank = 3)."
-  },
-  {
-    "question": "Find the SVD of the matrix [[3, 0], [4, 5]].",
-    "options": [
-      "U = [[0.6, -0.8], [0.8, 0.6]], Σ = [[5, 0], [0, 3]], Vᵀ = [[1, 0], [0, 1]]",
-      "U = [[0.6, 0.8], [-0.8, 0.6]], Σ = [[6, 0], [0, 2]], Vᵀ = I",
-      "Correct SVD values as computed",
-      "None of the above"
-    ],
-    "answer": "Correct SVD values as computed",
-    "explanation": "The actual SVD yields specific orthonormal U, diagonal Σ with singular values, and orthonormal Vᵀ; neither of the first two options matches exactly."
-  },
-  {
-    "question": "Find the capacity of the above-given channel given that B = 10 Hz, the total power available at the transmitter is 10 dB, and the noise variance is 1.",
-    "options": ["20 bps", "33.22 bps", "40 bps", "15 bps"],
-    "answer": "33.22 bps",
-    "explanation": "Using the MIMO capacity formula with given parameters and 10 dB (power = 10), the result is approximately 33.22 bits/s."
-  },
-  {
-    "question": "In spatial multiplexing, what happens when the number of transmit antennas exceeds the number of receive antennas?",
-    "options": [
-      "All transmitted streams can always be reliably separated",
-      "System capacity always increases linearly",
-      "Some spatial streams may interfere with each other, degrading performance",
-      "The receiver can ignore extra streams without any performance loss"
-    ],
-    "answer": "Some spatial streams may interfere with each other, degrading performance",
-    "explanation": "If Nt > Nr, the extra streams cannot be fully separated, leading to inter-stream interference and reduced performance."
-  },
-  {
-    "question": "Which of the following MIMO techniques primarily exploits the spatial multiplexing gain rather than diversity gain?",
-    "options": [
-      "Alamouti scheme",
-      "Space-time block coding",
-      "Vertical Bell Labs Layered Space-Time (V-BLAST)",
-      "Transmit diversity scheme"
-    ],
-    "answer": "Vertical Bell Labs Layered Space-Time (V-BLAST)",
-    "explanation": "V-BLAST is designed for high data rate transmission by sending multiple independent streams, focusing on multiplexing gain rather than diversity."
-  }
-]
+{
+  "version": 2.0,
+  "questions": [
+    {
+      "question": "After pre-processing and post-processing using SVD, what happens to the MIMO system?",
+      "answers": {
+        "a": "It works as an effective combining technique providing diversity gain",
+        "b": "It decomposes the channel into rank(H) parallel independent channels",
+        "c": "Since it involves multiplying input and output by a weight vector, it leads to increased power (array gain)",
+        "d": "None of the above"
+      },
+      "explanations": {
+        "a": "Incorrect. That describes diversity schemes, not SVD channel decomposition.",
+        "b": "Correct. SVD diagonalizes the MIMO channel into rank(H) orthogonal subchannels, each behaving as an independent SISO link.",
+        "c": "Incorrect. That effect is more related to beamforming/array gain.",
+        "d": "Incorrect. The correct description is option b."
+      },
+      "correctAnswer": "b",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Given H = [[1, 1], [1, -1]] × [[5, 0, 0], [0, 3, 0]] × [[1, 1, 0], [1, -1, 4], [2, -2, 1]], how many independent parallel streams can be formed?",
+      "answers": {
+        "a": "1",
+        "b": "2",
+        "c": "3",
+        "d": "Cannot be determined from given info"
+      },
+      "explanations": {
+        "a": "Incorrect. The diagonal matrix shows more than one non-zero singular value.",
+        "b": "Correct. The middle diagonal matrix shows two non-zero singular values, so the channel rank is 2, allowing 2 independent streams.",
+        "c": "Incorrect. Only two non-zero singular values exist.",
+        "d": "Incorrect. The rank can be determined from the given SVD form."
+      },
+      "correctAnswer": "b",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Find the rank of the matrix [[1, 2, 3], [0, 2, 2], [1, 4, 5]].",
+      "answers": {
+        "a": "1",
+        "b": "2",
+        "c": "3",
+        "d": "None of the above"
+      },
+      "explanations": {
+        "a": "Incorrect. There are more than one independent row.",
+        "b": "Correct. Row 3 is a linear combination of Row 1 and Row 2, so there are only 2 independent rows.",
+        "c": "Incorrect. Not all rows are independent.",
+        "d": "Incorrect. Option b is correct."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Find the rank of the matrix [[1, 0, 0], [0, 1, 0], [0, 0, 1]].",
+      "answers": {
+        "a": "1",
+        "b": "2",
+        "c": "3",
+        "d": "None of the above"
+      },
+      "explanations": {
+        "a": "Incorrect. The identity matrix has all independent rows.",
+        "b": "Incorrect. The rank is greater than 2.",
+        "c": "Correct. This is the 3×3 identity matrix, which has full rank (rank = 3).",
+        "d": "Incorrect. Option c is correct."
+      },
+      "correctAnswer": "c",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Find the SVD of the matrix [[3, 0], [4, 5]].",
+      "answers": {
+        "a": "U = [[0.6, -0.8], [0.8, 0.6]], Σ = [[5, 0], [0, 3]], Vᵀ = [[1, 0], [0, 1]]",
+        "b": "U = [[0.6, 0.8], [-0.8, 0.6]], Σ = [[6, 0], [0, 2]], Vᵀ = I",
+        "c": "Correct SVD values as computed",
+        "d": "None of the above"
+      },
+      "explanations": {
+        "a": "Incorrect. These numbers don't match the true SVD of [[3, 0], [4, 5]].",
+        "b": "Incorrect. These values are not the correct singular values or vectors.",
+        "c": "Correct. The actual SVD yields orthonormal U and Vᵀ with the true singular values.",
+        "d": "Incorrect. Option c is correct."
+      },
+      "correctAnswer": "c",
+      "difficulty": "advanced"
+    },
+    {
+      "question": "Find the capacity of the above-given channel given that B = 10 Hz, the total power available at the transmitter is 10 dB, and the noise variance is 1.",
+      "answers": {
+        "a": "20 bps",
+        "b": "33.22 bps",
+        "c": "40 bps",
+        "d": "15 bps"
+      },
+      "explanations": {
+        "a": "Incorrect. This underestimates the capacity given the available SNR.",
+        "b": "Correct. Using the MIMO capacity formula with given parameters and 10 dB (power = 10), the result is approximately 33.22 bits/s.",
+        "c": "Incorrect. This is larger than the computed value.",
+        "d": "Incorrect. This is much smaller than the correct capacity."
+      },
+      "correctAnswer": "b",
+      "difficulty": "advanced"
+    },
+    {
+      "question": "In spatial multiplexing, what happens when the number of transmit antennas exceeds the number of receive antennas?",
+      "answers": {
+        "a": "All transmitted streams can always be reliably separated",
+        "b": "System capacity always increases linearly",
+        "c": "Some spatial streams may interfere with each other, degrading performance",
+        "d": "The receiver can ignore extra streams without any performance loss"
+      },
+      "explanations": {
+        "a": "Incorrect. This is not possible without enough receive dimensions to separate streams.",
+        "b": "Incorrect. Capacity increase saturates when Nt > Nr.",
+        "c": "Correct. If Nt > Nr, the extra streams cannot be fully separated, leading to inter-stream interference and reduced performance.",
+        "d": "Incorrect. Ignoring streams wastes capacity but doesn't avoid interference in most cases."
+      },
+      "correctAnswer": "c",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Which of the following MIMO techniques primarily exploits the spatial multiplexing gain rather than diversity gain?",
+      "answers": {
+        "a": "Alamouti scheme",
+        "b": "Space-time block coding",
+        "c": "Vertical Bell Labs Layered Space-Time (V-BLAST)",
+        "d": "Transmit diversity scheme"
+      },
+      "explanations": {
+        "a": "Incorrect. Alamouti is a diversity scheme.",
+        "b": "Incorrect. Space-time block coding targets diversity gain.",
+        "c": "Correct. V-BLAST is designed for high data rate transmission by sending multiple independent streams, focusing on multiplexing gain rather than diversity.",
+        "d": "Incorrect. Transmit diversity aims for reliability, not multiplexing gain."
+      },
+      "correctAnswer": "c",
+      "difficulty": "intermediate"
+    }
+  ]
+}
