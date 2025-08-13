@@ -22,15 +22,20 @@ document.addEventListener('DOMContentLoaded', function () {
 let matrixData = [];
 let txElements = [], rxElements = [];
 let svdResult = null;
-const NUM_ANTENNAS = 6;
 
 document.addEventListener('DOMContentLoaded', () => {
     resetSimulation();
 });
 
+function validateAntennaCount(input) {
+    // Ensure values are between 1-6
+    if (input.value < 1) input.value = 1;
+    if (input.value > 6) input.value = 6;
+}
+
 function resetSimulation() {
-    document.getElementById("txCount").value = NUM_ANTENNAS;
-    document.getElementById("rxCount").value = NUM_ANTENNAS;
+    document.getElementById("txCount").value = 4; // Default to 4 instead of hardcoded 6
+    document.getElementById("rxCount").value = 4; // Default to 4 instead of hardcoded 6
     matrixData = [];
     svdResult = null;
     
@@ -48,7 +53,11 @@ function resetSimulation() {
     document.getElementById("matrixContainer").innerHTML = '';
     document.getElementById("sigmaMatrixContainer").innerHTML = '';
     
-    renderAntennas(NUM_ANTENNAS, NUM_ANTENNAS);
+    // Get values from input fields
+    const txCount = parseInt(document.getElementById("txCount").value);
+    const rxCount = parseInt(document.getElementById("rxCount").value);
+    
+    renderAntennas(txCount, rxCount);
     setTimeout(() => {
         drawChannelConnections();
     }, 50);
@@ -62,9 +71,13 @@ function simulate() {
         document.getElementById("eigenbeamBtn").style.display = "none";
         svdResult = null;
         
-        generateChannelMatrix(NUM_ANTENNAS, NUM_ANTENNAS);
+        // Get values from input fields
+        const txCount = parseInt(document.getElementById("txCount").value);
+        const rxCount = parseInt(document.getElementById("rxCount").value);
         
-        renderAntennas(NUM_ANTENNAS, NUM_ANTENNAS);
+        generateChannelMatrix(rxCount, txCount);
+        
+        renderAntennas(txCount, rxCount);
         setTimeout(() => {
             drawChannelConnections();
         }, 50);
@@ -291,7 +304,12 @@ function visualizeEigenbeams() {
                 eigenbeamBtn.textContent = "Visualize Eigenbeams";
                 eigenbeamBtn.onclick = visualizeEigenbeams;
                 analysisInfo.innerHTML = `<p>The SVD decomposes the channel into <strong>${R}</strong> independent parallel sub-channels (eigenbeams).</p>`;
-                renderAntennas(NUM_ANTENNAS, NUM_ANTENNAS);
+                
+                // Get current values from input fields when returning to channel view
+                const txCount = parseInt(document.getElementById("txCount").value);
+                const rxCount = parseInt(document.getElementById("rxCount").value);
+                renderAntennas(txCount, rxCount);
+                
                 setTimeout(() => {
                    drawChannelConnections();
                 }, 50);
