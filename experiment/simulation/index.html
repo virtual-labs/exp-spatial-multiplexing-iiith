@@ -39,13 +39,14 @@
                         <div id="input-section" class="layout-column">
                             <h3>Controls</h3>
                             <div class="control-group">
-                                <label for="txCount">Transmit Antennas:</label>
-                                <input type="number" id="txCount" value="6" readonly>
+                                <label for="txCount">Transmit Antennas (max 6):</label>
+                                <input type="number" id="txCount" value="4" min="1" max="6" onchange="validateAntennaCount(this)">
                             </div>
                             <div class="control-group">
-                                <label for="rxCount">Receive Antennas:</label>
-                                <input type="number" id="rxCount" value="6" readonly>
+                                <label for="rxCount">Receive Antennas (max 6):</label>
+                                <input type="number" id="rxCount" value="4" min="1" max="6" onchange="validateAntennaCount(this)">
                             </div>
+                        
                             <div class="error-message" id="errorMessage"></div>
                             <button id="simulateBtn" onclick="simulate()">Simulate Channel</button>
                             <button id="svdBtn" onclick="performSVD()" style="display: none;">Perform SVD</button>
