@@ -291,7 +291,7 @@ function visualizeEigenbeams() {
                 ctx.font = "bold 14px sans-serif";
                 ctx.textAlign = "center";
                 ctx.textBaseline = "bottom";
-                ctx.fillText(`λ${i+1}: ${s_i.toFixed(2)}`, midX, startY - 10);
+                ctx.fillText(`λ<sub>${i+1}</sub>: ${s_i.toFixed(2)}`, midX, startY - 10);
             });
 
             const conditionNumber = (S[0] > threshold && S[R-1] > threshold) ? (S[0] / S[R - 1]).toFixed(2) : "∞";
