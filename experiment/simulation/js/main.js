@@ -431,7 +431,22 @@ function visualizeEigenbeams() {
                 ctx.font = "bold 12px sans-serif";
                 ctx.textAlign = "center";
                 ctx.textBaseline = "bottom";
-                ctx.fillText(`λ<sub>${i+1}</sub>: ${s_i.toFixed(2)}`, midX, startY - 10);
+                ctx.fillText(`λ${i+1}: ${s_i.toFixed(2)}`, midX, startY - 35);
+                
+                // NEW: Calculate and display individual SNR
+                const streamSNR_dB = (s_i > threshold) ? baseSNR_dB + 10 * Math.log10(s_i * s_i) : -Infinity;
+                ctx.fillStyle = "#27ae60"; // Green color for SNR
+                ctx.font = "bold 11px sans-serif";
+                ctx.fillText(`SNR${i+1}: ${streamSNR_dB.toFixed(2)} dB`, midX, startY - 20);
+                
+                // Calculate and display individual capacity (Adjusted Y position)
+                const streamCapacity = Math.log2(1 + (snr / S.length) * Math.pow(s_i, 2));
+                totalCapacity += streamCapacity;
+                
+                ctx.fillStyle = "#e74c3c"; // Red color for Capacity
+                ctx.fillText(`C${i+1}: ${streamCapacity.toFixed(2)} bps/Hz`, midX, startY - 5);
+
+                // --- END OF MODIFICATIONS ---
             });
 
             const analysisInfo = document.getElementById("analysisInfo");
