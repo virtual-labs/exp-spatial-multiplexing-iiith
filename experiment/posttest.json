@@ -85,23 +85,6 @@
       },
       "correctAnswer": "c",
       "difficulty": "intermediate"
-    },
-    {
-      "question": "Which of the following MIMO techniques primarily exploits the spatial multiplexing gain rather than diversity gain?",
-      "answers": {
-        "a": "Alamouti scheme",
-        "b": "Space-time block coding",
-        "c": "Vertical Bell Labs Layered Space-Time (V-BLAST)",
-        "d": "Transmit diversity scheme"
-      },
-      "explanations": {
-        "a": "Incorrect. Alamouti is a diversity scheme.",
-        "b": "Incorrect. Space-time block coding targets diversity gain.",
-        "c": "Correct. V-BLAST is designed for high data rate transmission by sending multiple independent streams, focusing on multiplexing gain rather than diversity.",
-        "d": "Incorrect. Transmit diversity aims for reliability, not multiplexing gain."
-      },
-      "correctAnswer": "c",
-      "difficulty": "intermediate"
     }
   ]
 }
