@@ -50,6 +50,11 @@ function resetSimulation() {
     svdBtn.style.display = "none";
     svdBtn.disabled = false;
 
+    // Reset eigenbeam button to its original state
+    const eigenbeamBtn = document.getElementById("eigenbeamBtn");
+    eigenbeamBtn.textContent = "Visualize Eigenbeams";
+    eigenbeamBtn.onclick = visualizeEigenbeams;
+
     document.getElementById("matrixContainer").innerHTML = '';
     document.getElementById("sigmaMatrixContainer").innerHTML = '';
     
@@ -225,7 +230,56 @@ function displayComplexMatrix(matrix, containerId, highlightDiagonal = false) {
     container.appendChild(table);
 }
 
-// Updated performSVD function to calculate and display both SNR and Capacity
+// Custom function to perform SVD on complex matrix H directly
+function performComplexSVD(H) {
+    const nr = H.length;
+    const nt = H[0].length;
+    
+    // For SVD of complex matrix H, we compute H*H^H to get eigenvalues
+    // But we need the singular values of H, not eigenvalues of H*H^H
+    const HH = conjugateTranspose(H);
+    
+    let gramMatrix, isTransposed = false;
+    
+    // Choose the smaller Gram matrix for better numerical stability
+    if (nr <= nt) {
+        // Compute H*H^H (nr x nr matrix)
+        gramMatrix = multiplyComplexMatrices(H, HH);
+    } else {
+        // Compute H^H*H (nt x nt matrix) 
+        gramMatrix = multiplyComplexMatrices(HH, H);
+        isTransposed = true;
+    }
+    
+    // Extract real part for eigenvalue decomposition
+    const realMatrix = [];
+    for (let i = 0; i < gramMatrix.length; i++) {
+        realMatrix[i] = [];
+        for (let j = 0; j < gramMatrix[0].length; j++) {
+            realMatrix[i][j] = gramMatrix[i][j].re;
+        }
+    }
+    
+    // Compute eigenvalues
+    const eigenResult = numeric.eig(realMatrix);
+    const eigenValues = eigenResult.lambda.x;
+    
+    // Singular values are square roots of eigenvalues
+    let singularValues = eigenValues.map(val => Math.sqrt(Math.max(0, val))).sort((a, b) => b - a);
+    
+    // Pad with zeros to get min(nr, nt) singular values
+    const minDim = Math.min(nr, nt);
+    if (singularValues.length < minDim) {
+        const padding = new Array(minDim - singularValues.length).fill(0);
+        singularValues = singularValues.concat(padding);
+    } else {
+        singularValues = singularValues.slice(0, minDim);
+    }
+    
+    return singularValues;
+}
+
+// Updated performSVD function to work directly on H matrix
 function performSVD() {
     if (matrixData.length === 0) {
         showError('Please simulate a channel first.');
@@ -233,52 +287,44 @@ function performSVD() {
     }
 
     try {
-        // Complex SVD logic remains the same
         const H = matrixData;
-        const HH = conjugateTranspose(H);
-        const HH_H = multiplyComplexMatrices(HH, H);
+        const nr = H.length;
+        const nt = H[0].length;
+        
+        // Perform SVD directly on H to get singular values
+        const singularValues = performComplexSVD(H);
+        
+        // Rank is always min(nr, nt)
+        const R = Math.min(nr, nt);
+        
+        svdResult = { 
+            S: singularValues,
+            rank: R,
+            nr: nr,
+            nt: nt
+        };
 
-        const realMatrix = [];
-        for (let i = 0; i < HH_H.length; i++) {
-        realMatrix[i] = [];
-        for (let j = 0; j < HH_H[0].length; j++) {
-            realMatrix[i][j] = HH_H[i][j].re;
-        }
-        }
-
-        const eigenResult = numeric.eig(realMatrix);
-        const eigenValues = eigenResult.lambda.x;
-        const singularValues = eigenValues.map(val => Math.sqrt(Math.max(0, val))).sort((a, b) => b - a);
-
-        svdResult = { S: singularValues };
-        const threshold = 1e-10;
-        const R = singularValues.filter(val => val > threshold).length;
-
-    // --- Start of Changes ---
-
-        // 1. Define a base SNR to use for calculations (e.g., 10 dB)
-        const baseSNR_dB = 10; 
-
-        // 2. Call the function to calculate total SNR
+        // Calculate total SNR using singular values
+        const baseSNR_dB = 10;
         const totalSNR_dB = calculateTotalSNR(singularValues, baseSNR_dB);
     
-    // 3. Update the UI with all metrics
+        // Update the UI with all metrics
         document.getElementById("svdMatrixDisplay").style.display = "block";
         document.getElementById("metricsDisplay").style.display = "block";
 
-        const Sigma = numeric.diag(singularValues);
+        // Create and display sigma matrix (diagonal matrix of singular values)
+        const Sigma = createSigmaMatrix(singularValues, nr, nt);
         displayMatrix(Sigma, "sigmaMatrixContainer", true);
 
         document.getElementById("rankOutput").innerText = R;
-        document.getElementById("totalSnrOutput").innerText = `${totalSNR_dB.toFixed(2)} dB`; // Display the calculated SNR
+        // Total SNR calculation removed from display
+        // document.getElementById("totalSnrOutput").innerText = `${totalSNR_dB.toFixed(2)} dB`;
 
-        // Call the capacity calculation as before
-        calculateCapacity(singularValues); 
-    
-    // --- End of Changes ---
+        // Calculate and display capacity
+        calculateCapacity(singularValues);
 
         const analysisInfo = document.getElementById("analysisInfo");
-        analysisInfo.innerHTML = `<p>The SVD decomposes the complex channel into <strong>${R}</strong> independent parallel sub-channels (eigenbeams).</p>`;
+        analysisInfo.innerHTML = `<p>The SVD decomposes the ${nr}×${nt} complex channel into <strong>${R}</strong> independent parallel sub-channels (eigenbeams).</p>`;
         analysisInfo.style.display = "block";
 
         document.getElementById("eigenbeamBtn").style.display = "block";
@@ -287,6 +333,22 @@ function performSVD() {
     } catch (error) {
         showError('Error performing SVD: ' + error.message);
     }
+}
+
+// Helper function to create the Sigma matrix
+function createSigmaMatrix(singularValues, nr, nt) {
+    const sigma = [];
+    for (let i = 0; i < nr; i++) {
+        sigma[i] = [];
+        for (let j = 0; j < nt; j++) {
+            if (i === j && i < singularValues.length) {
+                sigma[i][j] = singularValues[i];
+            } else {
+                sigma[i][j] = 0;
+            }
+        }
+    }
+    return sigma;
 }
 
 function conjugateTranspose(matrix) {
@@ -343,34 +405,41 @@ function displayMatrix(matrix, containerId, highlightDiagonal = false) {
     container.appendChild(table);
 }
 
-// New function to calculate total SNR
-function calculateTotalSNR(singularValues, baseSNR) {
+// Updated function to calculate total SNR using singular values
+function calculateTotalSNR(singularValues, baseSNR_dB) {
     let totalSNR = 0;
     const threshold = 1e-10;
+    const baseSNR_linear = Math.pow(10, baseSNR_dB / 10);
     
-    singularValues.forEach(s_i => {
-        if (s_i > threshold) {
-            // SNR for each eigenbeam is proportional to the square of singular value
-            const streamSNR = baseSNR + 10 * Math.log10(s_i * s_i);
-            totalSNR += Math.pow(10, streamSNR / 10); // Convert to linear scale and sum
+    singularValues.forEach(sigma_i => {
+        if (sigma_i > threshold) {
+            // Eigenvalue (SNR for stream i) = sigma_i^2 * base_SNR
+            const eigenvalue = sigma_i * sigma_i;
+            const streamSNR_linear = eigenvalue * baseSNR_linear;
+            totalSNR += streamSNR_linear;
         }
     });
     
     return 10 * Math.log10(totalSNR); // Convert back to dB
 }
 
+// Updated capacity calculation using singular values directly
 function calculateCapacity(singularValues) {
-    const snr = 10;
+    const snr_linear = 10; // 10 dB base SNR in linear scale
     let capacity = 0;
-    singularValues.forEach(s_i => {
-        if (s_i > 1e-10) {
-            capacity += Math.log2(1 + (snr / singularValues.length) * Math.pow(s_i, 2));
+    const threshold = 1e-10;
+    
+    singularValues.forEach(sigma_i => {
+        if (sigma_i > threshold) {
+            // Each stream gets equal power allocation
+            const streamSNR = (snr_linear / singularValues.length) * Math.pow(sigma_i, 2);
+            capacity += Math.log2(1 + streamSNR);
         }
     });
     document.getElementById("capacityOutput").innerText = `${capacity.toFixed(2)} bps/Hz`;
 }
 
-// Updated visualizeEigenbeams function to show individual capacities
+// Updated visualizeEigenbeams function with corrected SNR and capacity calculations
 function visualizeEigenbeams() {
     if (!svdResult) {
         showError('Please perform SVD first.');
@@ -378,10 +447,9 @@ function visualizeEigenbeams() {
     }
 
     try {
-        const { S } = svdResult;
-        const threshold = 1e-10;
-        const R = S.filter(val => Math.abs(val) > threshold).length;
-        const snr = 10; // Base SNR in linear scale (10 dB = 10)
+        const { S, rank } = svdResult;
+        const R = rank;
+        const snr_linear = 10; // Base SNR in linear scale (10 dB = 10)
         const baseSNR_dB = 10; // Base SNR in dB for display
 
         renderAntennas(R, R);
@@ -400,12 +468,13 @@ function visualizeEigenbeams() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.setLineDash([]);
             
-            const max_s = S[0] > 1e-10 ? S[0] : 1;
+            const max_s = Math.max(...S.filter(s => s > 1e-10));
             const canvasRect = canvas.getBoundingClientRect();
 
-            txElements.forEach((tx, i) => {
+            for (let i = 0; i < R; i++) {
+                const tx = txElements[i];
                 const rx = rxElements[i];
-                if (!tx || !rx) return;
+                if (!tx || !rx) continue;
 
                 const txRect = tx.getBoundingClientRect();
                 const rxRect = rx.getBoundingClientRect();
@@ -413,8 +482,8 @@ function visualizeEigenbeams() {
                 const startY = txRect.top + txRect.height / 2 - canvasRect.top;
                 const endX = rxRect.left + rxRect.width / 2 - canvasRect.left;
                 
-                const s_i = S[i];
-                ctx.lineWidth = Math.max(1.5, 6 * (s_i / max_s));
+                const sigma_i = S[i];
+                ctx.lineWidth = Math.max(1.5, 6 * (sigma_i / max_s));
                 
                 ctx.strokeStyle = "#3498db"; 
                 ctx.beginPath();
@@ -424,40 +493,38 @@ function visualizeEigenbeams() {
 
                 const midX = (startX + endX) / 2;
                 
-                // --- START OF MODIFICATIONS ---
-
-                // Display singular value (Adjusted Y position to make space)
-                ctx.fillStyle = "#2c3e50"; // Dark color
+                // Display singular value
+                ctx.fillStyle = "#2c3e50";
                 ctx.font = "bold 12px sans-serif";
                 ctx.textAlign = "center";
                 ctx.textBaseline = "bottom";
-                ctx.fillText(`λ${i+1}: ${s_i.toFixed(2)}`, midX, startY - 35);
+                ctx.fillText(`σ${i+1}: ${sigma_i.toFixed(3)}`, midX, startY - 35);
                 
-                // NEW: Calculate and display individual SNR
-                const streamSNR_dB = (s_i > threshold) ? baseSNR_dB + 10 * Math.log10(s_i * s_i) : -Infinity;
-                ctx.fillStyle = "#27ae60"; // Green color for SNR
+                // Calculate and display individual SNR (eigenvalue = sigma^2)
+                const eigenvalue = sigma_i * sigma_i;
+                const streamSNR_dB = baseSNR_dB + 10 * Math.log10(eigenvalue);
+                ctx.fillStyle = "#27ae60";
                 ctx.font = "bold 11px sans-serif";
-                ctx.fillText(`SNR${i+1}: ${streamSNR_dB.toFixed(2)} dB`, midX, startY - 20);
+                ctx.fillText(`SNR: ${eigenvalue.toFixed(3)} (${streamSNR_dB.toFixed(2)} dB)`, midX, startY - 20);
                 
-                // Calculate and display individual capacity (Adjusted Y position)
-                const streamCapacity = Math.log2(1 + (snr / S.length) * Math.pow(s_i, 2));
+                // Calculate and display individual capacity
+                const streamSNR = (snr_linear / R) * eigenvalue;
+                const streamCapacity = Math.log2(1 + streamSNR);
                 totalCapacity += streamCapacity;
                 
-                ctx.fillStyle = "#e74c3c"; // Red color for Capacity
+                ctx.fillStyle = "#e74c3c";
                 ctx.fillText(`C${i+1}: ${streamCapacity.toFixed(2)} bps/Hz`, midX, startY - 5);
-
-                // --- END OF MODIFICATIONS ---
-            });
+            }
 
             const analysisInfo = document.getElementById("analysisInfo");
-            analysisInfo.innerHTML = `<p>Showing <strong>${R}</strong> eigenbeams with their individual capacities.<br>Total capacity is the sum of these streams: <strong>${totalCapacity.toFixed(2)} bps/Hz</strong>.</p>`;
+            analysisInfo.innerHTML = `<p>Showing <strong>${R}</strong> eigenbeams with singular values σ, eigenvalues λ=σ², and individual capacities.<br>Total capacity: <strong>${totalCapacity.toFixed(2)} bps/Hz</strong></p>`;
 
             const eigenbeamBtn = document.getElementById("eigenbeamBtn");
             eigenbeamBtn.textContent = "Return to Channel View";
             eigenbeamBtn.onclick = () => {
                 eigenbeamBtn.textContent = "Visualize Eigenbeams";
                 eigenbeamBtn.onclick = visualizeEigenbeams;
-                analysisInfo.innerHTML = `<p>The SVD decomposes the channel into <strong>${R}</strong> independent parallel sub-channels (eigenbeams).</p>`;
+                analysisInfo.innerHTML = `<p>The SVD decomposes the ${svdResult.nr}×${svdResult.nt} complex channel into <strong>${R}</strong> independent parallel sub-channels (eigenbeams).</p>`;
                 
                 const txCount = parseInt(document.getElementById("txCount").value);
                 const rxCount = parseInt(document.getElementById("rxCount").value);
