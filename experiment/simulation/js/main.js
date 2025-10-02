@@ -176,8 +176,24 @@ function drawLine(tx, rx, ctx) {
 
 function generateChannelMatrix(nr, nt) {
     // Generate complex channel matrix with real and imaginary parts
-    const realPart = numeric.random([nr, nt]);
-    const imagPart = numeric.random([nr, nt]);
+    // Using randn-like distribution (mean 0, std 1) instead of uniform [0,1]
+    const realPart = [];
+    const imagPart = [];
+    
+    for (let i = 0; i < nr; i++) {
+        realPart[i] = [];
+        imagPart[i] = [];
+        for (let j = 0; j < nt; j++) {
+            // Box-Muller transform to generate Gaussian random variables
+            const u1 = Math.random();
+            const u2 = Math.random();
+            const z0 = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+            const z1 = Math.sqrt(-2 * Math.log(u1)) * Math.sin(2 * Math.PI * u2);
+            
+            realPart[i][j] = z0;
+            imagPart[i][j] = z1;
+        }
+    }
     
     // Create complex matrix by combining real and imaginary parts
     matrixData = [];
