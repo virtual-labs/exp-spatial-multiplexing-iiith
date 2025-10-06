@@ -866,6 +866,7 @@ function computeErgodicCapacityFast() {
     computeErgodicCapacity();
 }
 
+// Update the plotErgodicCapacity function to ensure the y-axis is properly displayed on mobile
 function plotErgodicCapacity(snrRange, capacities) {
     const canvas = document.getElementById('ergodicChart');
     
@@ -884,7 +885,10 @@ function plotErgodicCapacity(snrRange, capacities) {
     // Clear any loading messages
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
-    // Create new chart
+    // Determine if on mobile based on screen width
+    const isMobile = window.innerWidth <= 576;
+    
+    // Create new chart with mobile-optimized options
     window.ergodicChart = new Chart(ctx, {
         type: 'line',
         data: {
@@ -894,36 +898,38 @@ function plotErgodicCapacity(snrRange, capacities) {
                 data: capacities,
                 borderColor: '#3498db',
                 backgroundColor: 'rgba(52, 152, 219, 0.1)',
-                borderWidth: 3,
-                pointRadius: 4,
+                borderWidth: isMobile ? 2 : 3,
+                pointRadius: isMobile ? 2 : 4,
                 pointBackgroundColor: '#3498db',
                 pointBorderColor: '#3498db',
-                pointHoverRadius: 6,
+                pointHoverRadius: isMobile ? 4 : 6,
                 tension: 0.1,
                 fill: true
             }]
         },
         options: {
             responsive: true,
-            maintainAspectRatio: true,
-            aspectRatio: 2,
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
                     display: true,
                     position: 'top',
                     labels: {
                         font: {
-                            size: 14
-                        }
+                            size: isMobile ? 10 : 14,
+                            weight: 'bold'
+                        },
+                        boxWidth: isMobile ? 10 : 16
                     }
                 },
                 title: {
                     display: true,
-                    text: `MIMO Ergodic Capacity vs SNR (${document.getElementById('txCountErgodic').value}x${document.getElementById('rxCountErgodic').value})`,
+                    text: `MIMO Capacity (${document.getElementById('txCountErgodic').value}x${document.getElementById('rxCountErgodic').value})`,
                     font: {
-                        size: 16,
+                        size: isMobile ? 12 : 16,
                         weight: 'bold'
-                    }
+                    },
+                    padding: isMobile ? {top: 5, bottom: 5} : {top: 10, bottom: 10}
                 }
             },
             scales: {
@@ -932,9 +938,18 @@ function plotErgodicCapacity(snrRange, capacities) {
                         display: true,
                         text: 'SNR (dB)',
                         font: {
-                            size: 14,
+                            size: isMobile ? 10 : 14,
                             weight: 'bold'
-                        }
+                        },
+                        padding: isMobile ? 0 : 10
+                    },
+                    ticks: {
+                        font: {
+                            size: isMobile ? 8 : 12
+                        },
+                        maxRotation: 0,
+                        autoSkip: true,
+                        autoSkipPadding: isMobile ? 15 : 50
                     },
                     grid: {
                         display: true,
@@ -946,20 +961,342 @@ function plotErgodicCapacity(snrRange, capacities) {
                         display: true,
                         text: 'Capacity (bps/Hz)',
                         font: {
-                            size: 14,
+                            size: isMobile ? 10 : 14,
                             weight: 'bold'
-                        }
+                        },
+                        padding: isMobile ? 0 : 10
                     },
-                    beginAtZero: true,
+                    beginAtZero: false, // Allow the chart to determine best starting point
+                    ticks: {
+                        font: {
+                            size: isMobile ? 8 : 12
+                        },
+                        padding: isMobile ? 3 : 5,
+                        count: isMobile ? 5 : 'auto', // Limit number of ticks on mobile
+                        display: true // Ensure ticks are displayed
+                    },
                     grid: {
                         display: true,
-                        color: 'rgba(0, 0, 0, 0.1)'
-                    }
+                        color: 'rgba(0, 0, 0, 0.1)',
+                        drawBorder: true
+                    },
+                    position: 'left', // Always keep the y-axis on the left
+                    display: true // Ensure axis is displayed
                 }
+            },
+            layout: {
+                padding: {
+                    left: isMobile ? 15 : 10,
+                    right: isMobile ? 5 : 10,
+                    top: isMobile ? 10 : 20,
+                    bottom: isMobile ? 10 : 20
+                }
+            },
+            elements: {
+                point: {
+                    radius: isMobile ? 2 : 3
+                },
+                line: {
+                    borderWidth: isMobile ? 2 : 3
+                }
+            },
+            animation: {
+                duration: 800
+            },
+            devicePixelRatio: 2 // Improve rendering on high-DPI screens
+        }
+    });
+
+    // Add a resize handler to refresh the chart when window size changes
+    if (!window.chartResizeHandler) {
+        window.chartResizeHandler = true;
+        window.addEventListener('resize', function() {
+            if (window.ergodicChart) {
+                // Check if we need to update mobile vs desktop settings
+                const currentIsMobile = window.innerWidth <= 576;
+                if (currentIsMobile !== isMobile) {
+                    // Redraw the chart with new settings if mobile status changed
+                    plotErgodicCapacity(snrRange, capacities);
+                } else {
+                    // Just resize the existing chart
+                    window.ergodicChart.resize();
+                }
+            }
+        });
+    }
+}
+
+// Add this code at the end of the file
+window.addEventListener('load', function() {
+    // Get all chart canvases
+    const chartCanvases = document.querySelectorAll('canvas');
+    
+    // Set proper sizing for all chart canvases
+    chartCanvases.forEach(canvas => {
+        if (canvas.id === 'ergodicChart') {
+            // Make sure parent container is properly set up
+            const container = canvas.parentElement;
+            if (container) {
+                container.style.position = 'relative';
+                container.style.height = window.innerWidth <= 576 ? '300px' : '450px';
+                container.style.width = '100%';
+                container.style.overflow = 'hidden';
+                
+                // Ensure proper padding for axis display
+                const padding = window.innerWidth <= 320 ? '0 0 30px 25px' : 
+                                window.innerWidth <= 576 ? '0 0 25px 20px' : 
+                                '0 0 20px 15px';
+                container.style.padding = padding;
+            }
+            
+            // Ensure chart always has height
+            if (window.innerWidth <= 320) {
+                canvas.height = 220;
+            } else if (window.innerWidth <= 576) {
+                canvas.height = 300;
             }
         }
     });
+});
+
+function plotErgodicCapacity(snrRange, capacities) {
+    const canvas = document.getElementById('ergodicChart');
+    
+    if (!canvas) {
+        showError('Canvas element not found');
+        return;
+    }
+    
+    // Set up the parent container with proper padding for axis display
+    const container = canvas.parentElement;
+    if (container) {
+        if (window.innerWidth <= 300) {
+            container.style.padding = "5px 5px 30px 45px"; // More left padding for tiny screens
+        }
+    }
+    
+    const ctx = canvas.getContext('2d');
+    
+    // Destroy existing chart if it exists
+    if (window.ergodicChart && typeof window.ergodicChart.destroy === 'function') {
+        window.ergodicChart.destroy();
+    }
+    
+    // Clear any loading messages
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Extra small screen detection
+    const isTinyScreen = window.innerWidth <= 300;
+    const isSmallScreen = window.innerWidth <= 576;
+    
+    // Create new chart with optimized options for tiny screens
+    window.ergodicChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: snrRange.map(val => val.toFixed(1)),
+            datasets: [{
+                label: 'Capacity (bps/Hz)',  // Shorter label for tiny screens
+                data: capacities,
+                borderColor: '#3498db',
+                backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                borderWidth: isTinyScreen ? 1.5 : (isSmallScreen ? 2 : 3),
+                pointRadius: isTinyScreen ? 1 : (isSmallScreen ? 2 : 4),
+                pointBackgroundColor: '#3498db',
+                pointBorderColor: '#3498db',
+                tension: 0.1,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: !isTinyScreen, // Hide legend on tiny screens
+                    position: 'top',
+                    labels: {
+                        font: {
+                            size: isSmallScreen ? 8 : 12,
+                        },
+                        boxWidth: isSmallScreen ? 8 : 12
+                    }
+                },
+                title: {
+                    display: true,
+                    text: isTinyScreen ? `${document.getElementById('txCountErgodic').value}x${document.getElementById('rxCountErgodic').value} MIMO` : 
+                          `MIMO Capacity (${document.getElementById('txCountErgodic').value}x${document.getElementById('rxCountErgodic').value})`,
+                    font: {
+                        size: isTinyScreen ? 10 : (isSmallScreen ? 12 : 16),
+                        weight: 'bold'
+                    },
+                    padding: isTinyScreen ? 2 : (isSmallScreen ? 5 : 10)
+                }
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: !isTinyScreen, // Hide title on tiny screens
+                        text: 'SNR (dB)',
+                        font: {
+                            size: isSmallScreen ? 8 : 12,
+                            weight: 'bold'
+                        }
+                    },
+                    ticks: {
+                        font: {
+                            size: isTinyScreen ? 7 : (isSmallScreen ? 8 : 12)
+                        },
+                        maxRotation: 0,
+                        autoSkip: true,
+                        autoSkipPadding: isTinyScreen ? 10 : (isSmallScreen ? 15 : 50),
+                        maxTicksLimit: isTinyScreen ? 5 : undefined,
+                        display: true
+                    },
+                    grid: {
+                        display: !isTinyScreen,
+                        color: 'rgba(0, 0, 0, 0.1)'
+                    }
+                },
+                y: {
+                    position: 'left',
+                    display: true,
+                    title: {
+                        display: !isTinyScreen, // Hide title on tiny screens
+                        text: 'bps/Hz',
+                        font: {
+                            size: isSmallScreen ? 8 : 12,
+                            weight: 'bold'
+                        }
+                    },
+                    beginAtZero: false,
+                    ticks: {
+                        font: {
+                            size: isTinyScreen ? 7 : (isSmallScreen ? 8 : 12)
+                        },
+                        padding: isTinyScreen ? 5 : 3,
+                        count: isTinyScreen ? 3 : (isSmallScreen ? 5 : 'auto'),
+                        display: true, // Always show ticks
+                        includeBounds: true,
+                        precision: 1,  // Limit decimal places
+                        maxTicksLimit: isTinyScreen ? 4 : undefined,
+                        z: 1, // Try to force ticks to the front
+                        color: 'black' // Force black color for visibility
+                    },
+                    grid: {
+                        display: true,
+                        color: 'rgba(0, 0, 0, 0.1)',
+                        drawBorder: true,
+                        drawOnChartArea: !isTinyScreen,
+                        drawTicks: true,
+                        tickLength: 10
+                    },
+                    border: {
+                        display: true,
+                        width: isTinyScreen ? 2 : 1,
+                        color: 'black'
+                    },
+                    weight: 100, // Try to give Y axis more importance
+                    min: Math.floor(Math.min(...capacities) * 0.9), // Add 10% padding at bottom
+                    max: Math.ceil(Math.max(...capacities) * 1.1),  // Add 10% padding at top
+                },
+            },
+            layout: {
+                padding: {
+                    left: isTinyScreen ? 30 : (isSmallScreen ? 15 : 10),
+                    right: 5,
+                    top: 5,
+                    bottom: isTinyScreen ? 20 : 10
+                }
+            },
+            elements: {
+                point: {
+                    radius: isTinyScreen ? 1 : (isSmallScreen ? 2 : 3),
+                    hitRadius: 10
+                },
+                line: {
+                    borderWidth: isTinyScreen ? 1.5 : (isSmallScreen ? 2 : 3)
+                }
+            },
+            animation: false, // Disable animation on tiny screens for better performance
+            devicePixelRatio: 2
+        }
+    });
+
+    // Add a special post-render hook for tiny screens
+    if (isTinyScreen && window.ergodicChart) {
+        // Force redraw after a small delay to ensure everything renders properly
+        setTimeout(() => {
+            if (window.ergodicChart) {
+                window.ergodicChart.update();
+                
+                // Add manual Y-axis label if needed
+                const chartArea = window.ergodicChart.chartArea;
+                if (chartArea && ctx) {
+                    ctx.save();
+                    ctx.fillStyle = 'black';
+                    ctx.font = 'bold 8px Arial';
+                    ctx.textAlign = 'center';
+                    
+                    // Draw vertical "Capacity" text along the left edge
+                    ctx.translate(5, chartArea.bottom/2);
+                    ctx.rotate(-Math.PI/2);
+                    ctx.fillText('Capacity', 0, 0);
+                    ctx.restore();
+                }
+            }
+        }, 100);
+    }
+
+    // Resize handler
+    if (!window.chartResizeHandler) {
+        window.chartResizeHandler = true;
+        window.addEventListener('resize', function() {
+            // Re-render chart on window resize
+            if (window.ergodicChart && snrRange && capacities) {
+                plotErgodicCapacity(snrRange, capacities);
+            }
+        });
+    }
 }
+
+// Add this function at the end of the file to fix Y-axis visibility
+window.addEventListener('load', function() {
+    // Create a MutationObserver to watch for chart rendering
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            // Look for Chart.js canvas elements
+            if (document.getElementById('ergodicChart')) {
+                // Check if container has the chart-js size monitors
+                const container = document.getElementById('ergodicChart').parentElement;
+                if (container && container.querySelector('.chartjs-size-monitor')) {
+                    // Force left padding for axis display
+                    if (window.innerWidth <= 300) {
+                        container.style.paddingLeft = '45px !important';
+                        container.style.paddingRight = '5px';
+                        container.style.paddingBottom = '30px';
+                        
+                        // Find and fix any Chart.js wrappers
+                        const wrappers = container.querySelectorAll('.chartjs-render-monitor');
+                        wrappers.forEach(wrapper => {
+                            wrapper.style.marginLeft = '25px';
+                            wrapper.style.width = 'calc(100% - 30px) !important';
+                        });
+                        
+                        // Stop observing once fixed
+                        observer.disconnect();
+                    }
+                }
+            }
+        });
+    });
+    
+    // Start observing the document for chart rendering
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true,
+        attributes: true
+    });
+});
 
 function showTab(tabId) {
     // Hide all sections
