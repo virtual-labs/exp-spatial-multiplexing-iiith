@@ -176,8 +176,24 @@ function drawLine(tx, rx, ctx) {
 
 function generateChannelMatrix(nr, nt) {
     // Generate complex channel matrix with real and imaginary parts
-    const realPart = numeric.random([nr, nt]);
-    const imagPart = numeric.random([nr, nt]);
+    // Using randn-like distribution (mean 0, std 1) instead of uniform [0,1]
+    const realPart = [];
+    const imagPart = [];
+    
+    for (let i = 0; i < nr; i++) {
+        realPart[i] = [];
+        imagPart[i] = [];
+        for (let j = 0; j < nt; j++) {
+            // Box-Muller transform to generate Gaussian random variables
+            const u1 = Math.random();
+            const u2 = Math.random();
+            const z0 = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+            const z1 = Math.sqrt(-2 * Math.log(u1)) * Math.sin(2 * Math.PI * u2);
+            
+            realPart[i][j] = z0;
+            imagPart[i][j] = z1;
+        }
+    }
     
     // Create complex matrix by combining real and imaginary parts
     matrixData = [];
@@ -194,6 +210,67 @@ function generateChannelMatrix(nr, nt) {
     }
     
     displayComplexMatrix(matrixData, "matrixContainer");
+}
+
+function displayStreamMetrics(singularValues, snr_dB) {
+    const container = document.getElementById("streamMetricsContainer");
+    container.innerHTML = '';
+    
+    const snr_linear = Math.pow(10, snr_dB / 10);
+    const R = singularValues.filter(s => s > 1e-10).length;
+    
+    const table = document.createElement('table');
+    table.classList.add('matrix');
+    
+    // Header row
+    const headerRow = document.createElement('tr');
+    ['Stream', 'σ', 'λ (SNR)', 'SNR (dB)', 'Capacity (bps/Hz)'].forEach(text => {
+        const th = document.createElement('th');
+        th.textContent = text;
+        headerRow.appendChild(th);
+    });
+    table.appendChild(headerRow);
+    
+    // Data rows
+    singularValues.forEach((sigma_i, i) => {
+        if (sigma_i > 1e-10) {
+            const row = document.createElement('tr');
+            
+            // Stream number
+            const cellStream = document.createElement('td');
+            cellStream.textContent = i + 1;
+            row.appendChild(cellStream);
+            
+            // Singular value
+            const cellSigma = document.createElement('td');
+            cellSigma.textContent = sigma_i.toFixed(3);
+            row.appendChild(cellSigma);
+            
+            // Eigenvalue (SNR in linear)
+            const eigenvalue = sigma_i * sigma_i;
+            const cellEigen = document.createElement('td');
+            cellEigen.textContent = eigenvalue.toFixed(3);
+            row.appendChild(cellEigen);
+            
+            // SNR in dB
+            const streamSNR_dB = snr_dB + 10 * Math.log10(eigenvalue);
+            const cellSNR = document.createElement('td');
+            cellSNR.textContent = streamSNR_dB.toFixed(2);
+            row.appendChild(cellSNR);
+            
+            // Capacity
+            const streamSNR = (snr_linear / R) * eigenvalue;
+            const capacity = Math.log2(1 + streamSNR);
+            const cellCap = document.createElement('td');
+            cellCap.textContent = capacity.toFixed(3);
+            row.appendChild(cellCap);
+            
+            table.appendChild(row);
+        }
+    });
+    
+    container.appendChild(table);
+    document.getElementById("streamMetricsDisplay").style.display = "block";
 }
 
 function displayComplexMatrix(matrix, containerId, highlightDiagonal = false) {
@@ -304,8 +381,8 @@ function performSVD() {
             nt: nt
         };
 
-        // Calculate total SNR using singular values
-        const baseSNR_dB = 10;
+        // Get SNR from input field - DECLARE ONLY ONCE
+        const baseSNR_dB = parseFloat(document.getElementById("snrInput").value);
         const totalSNR_dB = calculateTotalSNR(singularValues, baseSNR_dB);
     
         // Update the UI with all metrics
@@ -317,11 +394,12 @@ function performSVD() {
         displayMatrix(Sigma, "sigmaMatrixContainer", true);
 
         document.getElementById("rankOutput").innerText = R;
-        // Total SNR calculation removed from display
-        // document.getElementById("totalSnrOutput").innerText = `${totalSNR_dB.toFixed(2)} dB`;
 
         // Calculate and display capacity
         calculateCapacity(singularValues);
+
+        // Display per-stream metrics
+        displayStreamMetrics(singularValues, baseSNR_dB);
 
         const analysisInfo = document.getElementById("analysisInfo");
         analysisInfo.innerHTML = `<p>The SVD decomposes the ${nr}×${nt} complex channel into <strong>${R}</strong> independent parallel sub-channels (eigenbeams).</p>`;
@@ -450,8 +528,7 @@ function visualizeEigenbeams() {
         const { S, rank } = svdResult;
         const R = rank;
         const snr_linear = 10; // Base SNR in linear scale (10 dB = 10)
-        const baseSNR_dB = 10; // Base SNR in dB for display
-
+        const baseSNR_dB = parseFloat(document.getElementById("snrInput").value);
         renderAntennas(R, R);
 
         let totalCapacity = 0;
@@ -545,4 +622,360 @@ function showError(message) {
     errorMsg.textContent = message;
     errorMsg.style.display = 'block';
     setTimeout(() => { errorMsg.style.display = 'none'; }, 4000);
+}
+
+// OPTIMIZED VERSION - Replace your computeErgodicCapacity function with this
+function computeErgodicCapacity() {
+    const nt = parseInt(document.getElementById("txCountErgodic").value);
+    const nr = parseInt(document.getElementById("rxCountErgodic").value);
+    const snrMin = parseFloat(document.getElementById("snrMin").value);
+    const snrMax = parseFloat(document.getElementById("snrMax").value);
+    const snrStep = parseFloat(document.getElementById("snrStep").value);
+    const numRealizations = parseInt(document.getElementById("numRealizations").value);
+    
+    // Validate inputs
+    if (snrMin >= snrMax) {
+        showError('SNR Min must be less than SNR Max');
+        return;
+    }
+    
+    if (snrStep <= 0) {
+        showError('SNR Step must be positive');
+        return;
+    }
+    
+    // Show computing message with progress
+    const canvas = document.getElementById('ergodicChart');
+    const ctx = canvas.getContext('2d');
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#333';
+    ctx.font = '16px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('Computing... 0%', centerX, centerY);
+    
+    // Generate SNR range
+    const snrRange = [];
+    for (let snr_dB = snrMin; snr_dB <= snrMax; snr_dB += snrStep) {
+        snrRange.push(snr_dB);
+    }
+    
+    const capacities = new Array(snrRange.length).fill(0);
+    let currentRealization = 0;
+    
+    // OPTIMIZATION: Process in chunks to avoid blocking UI
+    const CHUNK_SIZE = 20; // Process 20 realizations at a time
+    
+    function processChunk() {
+        const chunkEnd = Math.min(currentRealization + CHUNK_SIZE, numRealizations);
+        
+        for (let real = currentRealization; real < chunkEnd; real++) {
+            // Generate random complex channel
+            const H = [];
+            const scale = 1 / Math.sqrt(2);
+            
+            for (let i = 0; i < nr; i++) {
+                H[i] = [];
+                for (let j = 0; j < nt; j++) {
+                    const u1 = Math.random();
+                    const u2 = Math.random();
+                    const mag = Math.sqrt(-2 * Math.log(u1));
+                    const phase = 2 * Math.PI * u2;
+                    
+                    H[i][j] = {
+                        re: mag * Math.cos(phase) * scale,
+                        im: mag * Math.sin(phase) * scale
+                    };
+                }
+            }
+            
+            // Compute singular values
+            const singularValues = performComplexSVDOptimized(H);
+            
+            // Calculate capacity for all SNR values
+            const R = Math.min(nr, nt);
+            
+            for (let snrIdx = 0; snrIdx < snrRange.length; snrIdx++) {
+                const snr_dB = snrRange[snrIdx];
+                const snr_linear = Math.pow(10, snr_dB / 10);
+                let capacity = 0;
+                
+                for (let i = 0; i < singularValues.length; i++) {
+                    const sigma_i = singularValues[i];
+                    if (sigma_i < 1e-10) break; // Early exit
+                    
+                    const eigenvalue = sigma_i * sigma_i;
+                    const streamSNR = (snr_linear / R) * eigenvalue;
+                    capacity += Math.log2(1 + streamSNR);
+                }
+                
+                capacities[snrIdx] += capacity;
+            }
+        }
+        
+        currentRealization = chunkEnd;
+        
+        // Update progress
+        const progress = Math.round((currentRealization / numRealizations) * 100);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#333';
+        ctx.font = '16px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(`Computing... ${progress}%`, centerX, centerY);
+        
+        // Continue processing or finalize
+        if (currentRealization < numRealizations) {
+            setTimeout(processChunk, 10); // Small delay to update UI
+        } else {
+            // Average the capacities
+            for (let i = 0; i < capacities.length; i++) {
+                capacities[i] /= numRealizations;
+            }
+            
+            // Plot results
+            plotErgodicCapacity(snrRange, capacities);
+        }
+    }
+    
+    // Start processing after a short delay
+    setTimeout(processChunk, 50);
+}
+
+// OPTIMIZED: Faster random channel generation
+function generateRandomChannel(nr, nt) {
+    const H = new Array(nr);
+    const scale = 1 / Math.sqrt(2);
+    
+    for (let i = 0; i < nr; i++) {
+        H[i] = new Array(nt);
+        for (let j = 0; j < nt; j++) {
+            // Box-Muller transform
+            const u1 = Math.random();
+            const u2 = Math.random();
+            const mag = Math.sqrt(-2 * Math.log(u1));
+            const phase = 2 * Math.PI * u2;
+            
+            H[i][j] = {
+                re: mag * Math.cos(phase) * scale,
+                im: mag * Math.sin(phase) * scale
+            };
+        }
+    }
+    
+    return H;
+}
+
+// OPTIMIZED SVD: Faster computation with early exit
+function performComplexSVDOptimized(H) {
+    const nr = H.length;
+    const nt = H[0].length;
+    const minDim = Math.min(nr, nt);
+    
+    // Choose smaller Gram matrix
+    let gramMatrix;
+    const HH = conjugateTranspose(H);
+    
+    if (nr <= nt) {
+        gramMatrix = multiplyComplexMatricesOptimized(H, HH);
+    } else {
+        gramMatrix = multiplyComplexMatricesOptimized(HH, H);
+    }
+    
+    // Extract real part (Gram matrix is Hermitian, so real part is symmetric)
+    const dim = gramMatrix.length;
+    const realMatrix = new Array(dim);
+    for (let i = 0; i < dim; i++) {
+        realMatrix[i] = new Array(dim);
+        for (let j = 0; j < dim; j++) {
+            realMatrix[i][j] = gramMatrix[i][j].re;
+        }
+    }
+    
+    // Compute eigenvalues
+    const eigenResult = numeric.eig(realMatrix);
+    const eigenValues = eigenResult.lambda.x;
+    
+    // Singular values (sorted descending)
+    const singularValues = new Array(minDim);
+    for (let i = 0; i < eigenValues.length && i < minDim; i++) {
+        singularValues[i] = Math.sqrt(Math.max(0, eigenValues[i]));
+    }
+    
+    // Pad with zeros if needed
+    for (let i = eigenValues.length; i < minDim; i++) {
+        singularValues[i] = 0;
+    }
+    
+    // Sort descending
+    singularValues.sort((a, b) => b - a);
+    
+    return singularValues;
+}
+
+// OPTIMIZED: Faster complex matrix multiplication
+function multiplyComplexMatricesOptimized(A, B) {
+    const rowsA = A.length;
+    const colsA = A[0].length;
+    const colsB = B[0].length;
+    
+    const result = new Array(rowsA);
+    
+    for (let i = 0; i < rowsA; i++) {
+        result[i] = new Array(colsB);
+        for (let j = 0; j < colsB; j++) {
+            let re = 0, im = 0;
+            
+            for (let k = 0; k < colsA; k++) {
+                const a = A[i][k];
+                const b = B[k][j];
+                
+                // Complex multiplication: (a+bi)(c+di) = (ac-bd) + (ad+bc)i
+                re += a.re * b.re - a.im * b.im;
+                im += a.re * b.im + a.im * b.re;
+            }
+            
+            result[i][j] = { re: re, im: im };
+        }
+    }
+    
+    return result;
+}
+
+// ADDITIONAL OPTIMIZATION: Use lookup table for power calculations
+const snrLookup = new Map();
+
+function getSNRLinear(snr_dB) {
+    if (!snrLookup.has(snr_dB)) {
+        snrLookup.set(snr_dB, Math.pow(10, snr_dB / 10));
+    }
+    return snrLookup.get(snr_dB);
+}
+
+// ALTERNATIVE: Reduce number of realizations with better sampling
+function computeErgodicCapacityFast() {
+    // Reduce realizations but use better statistical methods
+    const defaultRealizations = parseInt(document.getElementById("numRealizations").value);
+    const adaptiveRealizations = Math.max(50, Math.min(defaultRealizations, 200));
+    
+    document.getElementById("numRealizations").value = adaptiveRealizations;
+    
+    computeErgodicCapacity();
+}
+
+function plotErgodicCapacity(snrRange, capacities) {
+    const canvas = document.getElementById('ergodicChart');
+    
+    if (!canvas) {
+        showError('Canvas element not found');
+        return;
+    }
+    
+    const ctx = canvas.getContext('2d');
+    
+    // Destroy existing chart if it exists
+    if (window.ergodicChart && typeof window.ergodicChart.destroy === 'function') {
+        window.ergodicChart.destroy();
+    }
+    
+    // Clear any loading messages
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Create new chart
+    window.ergodicChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: snrRange.map(val => val.toFixed(1)),
+            datasets: [{
+                label: 'Ergodic Capacity (bps/Hz)',
+                data: capacities,
+                borderColor: '#3498db',
+                backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                borderWidth: 3,
+                pointRadius: 4,
+                pointBackgroundColor: '#3498db',
+                pointBorderColor: '#3498db',
+                pointHoverRadius: 6,
+                tension: 0.1,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            aspectRatio: 2,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                    labels: {
+                        font: {
+                            size: 14
+                        }
+                    }
+                },
+                title: {
+                    display: true,
+                    text: `MIMO Ergodic Capacity vs SNR (${document.getElementById('txCountErgodic').value}x${document.getElementById('rxCountErgodic').value})`,
+                    font: {
+                        size: 16,
+                        weight: 'bold'
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'SNR (dB)',
+                        font: {
+                            size: 14,
+                            weight: 'bold'
+                        }
+                    },
+                    grid: {
+                        display: true,
+                        color: 'rgba(0, 0, 0, 0.1)'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Capacity (bps/Hz)',
+                        font: {
+                            size: 14,
+                            weight: 'bold'
+                        }
+                    },
+                    beginAtZero: true,
+                    grid: {
+                        display: true,
+                        color: 'rgba(0, 0, 0, 0.1)'
+                    }
+                }
+            }
+        }
+    });
+}
+
+function showTab(tabId) {
+    // Hide all sections
+    document.getElementById('TASK1').style.display = 'none';
+    document.getElementById('TASK2').style.display = 'none';
+    
+    // Show selected section
+    document.getElementById(tabId).style.display = 'block';
+    
+    // Update button states
+    document.getElementById('tab1Btn').classList.remove('active');
+    document.getElementById('tab2Btn').classList.remove('active');
+    
+    if (tabId === 'TASK1') {
+        document.getElementById('tab1Btn').classList.add('active');
+    } else {
+        document.getElementById('tab2Btn').classList.add('active');
+    }
 }
