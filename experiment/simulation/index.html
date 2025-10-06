@@ -13,6 +13,12 @@
 </head>
 <body>
     
+        <!-- Add navigation bar -->
+        <div style="background-color: #f8f9fa; padding: 10px; text-align: center; border-bottom: 2px solid #98CB3B;">
+            <button id="tab1Btn" class="tab-button active" onclick="showTab('TASK1')">Spatial Multiplexing</button>
+            <button id="tab2Btn" class="tab-button" onclick="showTab('TASK2')">Ergodic Capacity Analysis</button>
+        </div>
+    
         <section class="fre" id="TASK1">
             <div class="max-width">
                 <h2 class="title">Spatial Multiplexing simulation</h2>
@@ -43,6 +49,10 @@
                             <div class="control-group">
                                 <label for="rxCount">Receive Antennas (max 6):</label>
                                 <input type="number" id="rxCount" value="4" min="1" max="6" onchange="validateAntennaCount(this)">
+                            </div>
+                            <div class="control-group">
+                                <label for="snrInput">Average SNR (dB):</label>
+                                <input type="number" id="snrInput" value="10" min="0" max="50" step="1">
                             </div>
                         
                             <div class="error-message" id="errorMessage"></div>
@@ -90,6 +100,10 @@
                                     <div class="metric">Sum Capacity<span id="capacityOutput">- bps/Hz</span></div>
                                 </div>
                             </div>
+                            <div id="streamMetricsDisplay" class="matrix-display" style="display: none;">
+                                <h3>Per-Stream Metrics</h3>
+                                <div id="streamMetricsContainer"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -98,10 +112,49 @@
             </div>
             
         </section>
+
+        <section class="fre" id="TASK2" style="display: none;">
+            <div class="max-width">
+                <h2 class="title">MIMO Ergodic Capacity vs SNR</h2>
+                <div class="columns-container">
+                    <div class="left-column box">
+                        <h3>Parameters</h3>
+                        <div class="control-group">
+                            <label for="txCountErgodic">Transmit Antennas:</label>
+                            <input type="number" id="txCountErgodic" value="4" min="1" max="6">
+                        </div>
+                        <div class="control-group">
+                            <label for="rxCountErgodic">Receive Antennas:</label>
+                            <input type="number" id="rxCountErgodic" value="4" min="1" max="6">
+                        </div>
+                        <div class="control-group">
+                            <label for="snrMin">SNR Min (dB):</label>
+                            <input type="number" id="snrMin" value="0" min="-10" max="30">
+                        </div>
+                        <div class="control-group">
+                            <label for="snrMax">SNR Max (dB):</label>
+                            <input type="number" id="snrMax" value="30" min="0" max="50">
+                        </div>
+                        <div class="control-group">
+                            <label for="snrStep">SNR Step (dB):</label>
+                            <input type="number" id="snrStep" value="2" min="0.5" max="5" step="0.5">
+                        </div>
+                        <div class="control-group">
+                            <label for="numRealizations">Number of Realizations:</label>
+                            <input type="number" id="numRealizations" value="1000" min="100" max="10000" step="100">
+                        </div>
+                        <button onclick="computeErgodicCapacity()">Compute Ergodic Capacity</button>
+                    </div>
+                    <div class="right-column box" style="flex: 2; margin-left: 15px;">
+                        <h3>Ergodic Capacity Plot</h3>
+                        <div style="position: relative; width: 100%; height: 450px;">
+                            <canvas id="ergodicChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     
-
-
-
 <script src="./js/main.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/virtual-labs/virtual-style@0.0.8-b/js/script.js"></script>
 
