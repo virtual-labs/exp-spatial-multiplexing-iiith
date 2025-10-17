@@ -1047,3 +1047,430 @@ button {
     background-color: #3498db;
     color: white;
 }
+
+/* Tab Container Styles - Replace inline styling with CSS class */
+.tab-container {
+    width: 100%;
+    background-color: #f8f9fa;
+    padding: 10px;
+    text-align: center;
+    border-bottom: 2px solid #98CB3B;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* Responsive styles for TASK2 */
+@media (max-width: 992px) {
+    #TASK2 .columns-container {
+        flex-direction: column;
+        padding: 10px;
+    }
+    
+    #TASK2 .left-column, 
+    #TASK2 .right-column {
+        flex: 1 0 auto;
+        width: 100%;
+        margin: 0 0 15px 0 !important;
+        min-width: 0;
+    }
+    
+    #ergodicChart {
+        height: 400px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .tab-button {
+        padding: 8px 15px;
+        font-size: 14px;
+    }
+    
+    #TASK2 .columns-container {
+        padding: 8px;
+    }
+    
+    #ergodicChart {
+        height: 350px !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .tab-container {
+        padding: 8px 5px;
+    }
+    
+    .tab-button {
+        padding: 8px 10px;
+        font-size: 13px;
+        margin: 0 3px;
+    }
+    
+    #TASK2 .left-column,
+    #TASK2 .right-column {
+        padding: 12px;
+        margin-bottom: 10px;
+    }
+    
+    #ergodicChart {
+        height: 300px !important;
+    }
+}
+
+@media (max-width: 375px) {
+    .tab-container {
+        padding: 5px 3px;
+    }
+    
+    .tab-button {
+        padding: 6px 8px;
+        font-size: 12px;
+        margin: 0 2px;
+    }
+    
+    #TASK2 .left-column,
+    #TASK2 .right-column {
+        padding: 8px;
+        margin-bottom: 8px;
+    }
+    
+    #TASK2 .control-group {
+        margin-bottom: 8px;
+    }
+    
+    #TASK2 label {
+        font-size: 0.9rem;
+    }
+    
+    #ergodicChart {
+        height: 250px !important;
+    }
+}
+
+@media (max-width: 320px) {
+    .tab-container {
+        padding: 4px 2px;
+    }
+    
+    .tab-button {
+        padding: 5px 6px;
+        font-size: 11px;
+        margin: 0 1px;
+        width: 45%;
+    }
+    
+    #TASK2 .left-column,
+    #TASK2 .right-column {
+        padding: 6px;
+        margin-bottom: 6px;
+    }
+    
+    #TASK2 .control-group {
+        margin-bottom: 6px;
+    }
+    
+    #TASK2 h3 {
+        font-size: 1.1rem;
+    }
+    
+    #ergodicChart {
+        height: 220px !important;
+    }
+}
+
+@media (max-width: 300px) {
+    .tab-button {
+        padding: 4px 5px;
+        font-size: 10px;
+        width: 48%;
+        margin: 0;
+    }
+    
+    #TASK2 .left-column,
+    #TASK2 .right-column {
+        padding: 5px;
+        margin-bottom: 5px;
+    }
+    
+    #TASK2 .control-group {
+        margin-bottom: 5px;
+    }
+    
+    #TASK2 h3 {
+        font-size: 1rem;
+    }
+    
+    #TASK2 input {
+        padding: 4px;
+        font-size: 0.75rem;
+    }
+    
+    #TASK2 button {
+        padding: 5px;
+        font-size: 0.75rem;
+    }
+    
+    #ergodicChart {
+        height: 200px !important;
+    }
+}
+
+/* Enhanced chart container styling for better responsiveness */
+#TASK2 .right-column div[style] {
+    position: relative !important;
+    width: 100% !important;
+    height: 450px !important;
+    max-height: 70vh !important;
+    overflow: hidden !important;
+}
+
+#ergodicChart {
+    max-width: 100% !important;
+    max-height: 100% !important;
+}
+
+/* Improve TASK2 responsiveness across all device sizes */
+@media (max-width: 992px) {
+    #TASK2 .columns-container {
+        flex-direction: column;
+        padding: 10px;
+    }
+    
+    #TASK2 .left-column, 
+    #TASK2 .right-column {
+        flex: 1 0 auto;
+        width: 100%;
+        margin: 0 0 15px 0 !important;
+        min-width: 0;
+    }
+    
+    #TASK2 .right-column div[style] {
+        height: 400px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    /* ...existing code... */
+    
+    #TASK2 .right-column div[style] {
+        height: 350px !important;
+    }
+}
+
+@media (max-width: 576px) {
+    /* ...existing code... */
+    
+    #TASK2 .right-column div[style] {
+        height: 300px !important;
+    }
+}
+
+@media (max-width: 375px) {
+    /* ...existing code... */
+    
+    #TASK2 .right-column div[style] {
+        height: 500px !important;
+        width: 100% !important;   }
+}
+
+@media (max-width: 320px) {
+    /* ...existing code... */
+    
+    #TASK2 .right-column div[style] {
+        height: 220px !important;
+    }
+}
+
+@media (max-width: 300px) {
+    /* ...existing code... */
+    
+    #TASK2 .right-column div[style] {
+        height: 200px !important;
+        padding: 0 !important;
+    }
+    
+    #TASK2 .right-column {
+        padding: 5px;
+    }
+}
+
+/* Make sure chart containers are truly responsive */
+canvas {
+
+    max-height: 100% !important;
+}
+
+/* Ensure chart container properly responds */
+#TASK2 .right-column {
+    display: flex;
+    flex-direction: column;
+}
+
+#TASK2 .right-column h3 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+/* Add better chart container styling for axis visibility */
+.chart-container {
+    position: relative !important;
+    width: 100% !important;
+    height: 450px !important;
+    max-height: 70vh !important;
+    padding: 5px 5px 10px 15px !important; /* Add padding to ensure axes are visible */
+    box-sizing: border-box !important;
+    margin-bottom: 15px !important;
+}
+
+/* Specific chart settings for mobile - ensure Y-axis visibility */
+@media (max-width: 576px) {
+    .chart-container {
+        padding: 5px 5px 15px 20px !important; /* More left padding on mobile for Y-axis */
+        height: 300px !important;
+    }
+    
+    /* Ensure Chart.js renders the Y-axis properly */
+    canvas#ergodicChart {
+        max-width: calc(100% - 20px) !important; /* Leave room for Y-axis */
+        margin-left: 20px !important;
+    }
+    
+    /* Override any Chart.js applied styles to ensure axis visibility */
+    .chart-container .chartjs-size-monitor {
+        padding-left: 20px !important;
+    }
+}
+
+@media (max-width: 375px) {
+    .chart-container {
+        padding: 5px 5px 20px 25px !important; /* Even more left padding for smaller screens */
+        height: 250px !important;
+    }
+    
+    canvas#ergodicChart {
+        max-width: calc(100% - 25px) !important;
+        margin-left: 25px !important;
+    }
+}
+
+@media (max-width: 320px) {
+    .chart-container {
+        padding: 5px 5px 25px 30px !important;
+        height: 220px !important;
+    }
+    
+    canvas#ergodicChart {
+        max-width: calc(100% - 30px) !important;
+        margin-left: 30px !important;
+    }
+}
+
+@media (max-width: 300px) {
+    .chart-container {
+        padding: 5px 5px 30px 35px !important;
+        height: 200px !important;
+    }
+    
+    canvas#ergodicChart {
+        max-width: calc(100% - 35px) !important;
+        margin-left: 35px !important;
+    }
+}
+
+/* Make sure ChartJS elements behave properly */
+#TASK2 .chart-container canvas {
+    display: block !important;
+    box-sizing: border-box !important;
+}
+
+/* Ensure Chart.js wrapper elements don't hide the axes */
+#TASK2 .chart-container > * {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Extreme micro-screen fixes for Y-axis visibility (290px or smaller) */
+@media (max-width: 300px) {
+    /* Extra aggressive Y-axis display fixes */
+    #TASK2 .right-column div[style] {
+        position: relative !important;
+        width: calc(100% - 10px) !important;
+        height: 200px !important;
+        padding: 0 0 30px 45px !important;
+        box-sizing: border-box !important;
+        margin-left: 10px !important;
+    }
+    
+    canvas#ergodicChart {
+        position: relative !important;
+        max-width: calc(100% - 45px) !important;
+        margin-left: 45px !important;
+        border-left: 1px solid #888 !important;
+    }
+    
+    /* Create a fake Y-axis when all else fails */
+    #TASK2 .right-column div[style]::before {
+        content: '';
+        position: absolute;
+        left: 44px;
+        top: 10px;
+        bottom: 30px;
+        width: 1px;
+        background-color: #000;
+        z-index: 10;
+    }
+    
+    /* Add fake Y-axis label */
+    #TASK2 .right-column div[style]::after {
+        content: 'bps/Hz';
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%) rotate(-90deg);
+        font-size: 8px;
+        font-weight: bold;
+        white-space: nowrap;
+    }
+    
+    /* Ensure chart container has sufficient space */
+    .chart-container {
+        min-height: 200px !important;
+        padding: 5px 5px 30px 45px !important;
+    }
+    
+    /* Fix any Chart.js wrappers */
+    .chartjs-size-monitor,
+    .chartjs-render-monitor {
+        margin-left: 25px !important;
+        width: calc(100% - 30px) !important;
+    }
+}
+
+/* Chart container styling with high specificity to override Chart.js */
+body #TASK2 .right-column div.chart-container,
+body #TASK2 .right-column div[style] {
+    overflow: visible !important; /* Allow Y-axis to be visible outside container */
+}
+
+/* Ensure our overrides take precedence */
+body canvas#ergodicChart.chartjs-render-monitor {
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+/* Override any Chart.js styles at extremely small sizes */
+@media (max-width: 290px) {
+    body canvas#ergodicChart.chartjs-render-monitor {
+        margin-left: 45px !important;
+        max-width: calc(100% - 50px) !important;
+    }
+    
+    /* Create more space for Y-axis */
+    body #TASK2 .right-column div[style] {
+        padding-left: 50px !important;
+        padding-bottom: 35px !important;
+    }
+}
+
+
