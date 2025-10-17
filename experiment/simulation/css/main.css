@@ -455,9 +455,9 @@ th{
 
 
 :root {
-    --primary-color: #3498db;
+    --primary-color: #98CB3B;
     --secondary-color: #2980b9;
-    --accent-color: #e74c3c;
+    --accent-color: Red;
     --light-bg: #f8f9fa;
     --dark-bg: #343a40;
     --text-color: #333;
@@ -476,7 +476,7 @@ th{
 .header h1 {
     margin: 0;
     font-size: 2.2rem;
-    color: var(--primary-color);
+    color: black;
 }
 
 .header p {
