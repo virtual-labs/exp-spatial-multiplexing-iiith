@@ -169,7 +169,12 @@
                             <label for="numRealizations">Number of Realizations:</label>
                             <input type="number" id="numRealizations" value="1000" min="100" max="10000" step="100">
                         </div>
-                        <button onclick="computeErgodicCapacity()">Compute Ergodic Capacity</button>
+                        <button onclick="computeErgodicCapacity()">Add Curve to Plot</button>
+                        <button onclick="clearAllCurves()" style="margin-top: 10px; background-color: #e74c3c;">Clear All Curves</button>
+                        <div id="curvesList" style="margin-top: 15px; font-size: 12px;">
+                            <strong>Added Curves (0/6):</strong>
+                            <div id="curvesContainer" style="margin-top: 5px;"></div>
+                        </div>
                     </div>
                     <div class="right-column box" style="flex: 2; margin-right: 35px;">
                         <h3>Ergodic Capacity Plot</h3>

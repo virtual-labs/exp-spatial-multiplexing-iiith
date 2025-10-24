@@ -23,6 +23,10 @@ let matrixData = [];
 let txElements = [], rxElements = [];
 let svdResult = null;
 
+let ergodicCurves = [];
+const MAX_CURVES = 6;
+const CURVE_COLORS = ['#3498db', '#e74c3c', '#2ecc71', '#f39c12', '#9b59b6', '#1abc9c'];
+
 document.addEventListener('DOMContentLoaded', () => {
     resetSimulation();
 });
@@ -626,6 +630,11 @@ function showError(message) {
 
 // OPTIMIZED VERSION - Replace your computeErgodicCapacity function with this
 function computeErgodicCapacity() {
+    if (ergodicCurves.length >= MAX_CURVES) {
+        showError(`Maximum ${MAX_CURVES} curves reached. Clear curves to add more.`);
+        return;
+    }
+    
     const nt = parseInt(document.getElementById("txCountErgodic").value);
     const nr = parseInt(document.getElementById("rxCountErgodic").value);
     const snrMin = parseFloat(document.getElementById("snrMin").value);
@@ -644,7 +653,17 @@ function computeErgodicCapacity() {
         return;
     }
     
-    // Show computing message with progress
+    // Check if this configuration already exists
+    const configExists = ergodicCurves.some(curve => 
+        curve.nt === nt && curve.nr === nr
+    );
+    
+    if (configExists) {
+        showError(`Configuration ${nt}x${nr} already exists in the plot`);
+        return;
+    }
+    
+    // Show computing message
     const canvas = document.getElementById('ergodicChart');
     const ctx = canvas.getContext('2d');
     const centerX = canvas.width / 2;
@@ -666,14 +685,12 @@ function computeErgodicCapacity() {
     const capacities = new Array(snrRange.length).fill(0);
     let currentRealization = 0;
     
-    // OPTIMIZATION: Process in chunks to avoid blocking UI
-    const CHUNK_SIZE = 20; // Process 20 realizations at a time
+    const CHUNK_SIZE = 20;
     
     function processChunk() {
         const chunkEnd = Math.min(currentRealization + CHUNK_SIZE, numRealizations);
         
         for (let real = currentRealization; real < chunkEnd; real++) {
-            // Generate random complex channel
             const H = [];
             const scale = 1 / Math.sqrt(2);
             
@@ -692,10 +709,7 @@ function computeErgodicCapacity() {
                 }
             }
             
-            // Compute singular values
             const singularValues = performComplexSVDOptimized(H);
-            
-            // Calculate capacity for all SNR values
             const R = Math.min(nr, nt);
             
             for (let snrIdx = 0; snrIdx < snrRange.length; snrIdx++) {
@@ -705,7 +719,7 @@ function computeErgodicCapacity() {
                 
                 for (let i = 0; i < singularValues.length; i++) {
                     const sigma_i = singularValues[i];
-                    if (sigma_i < 1e-10) break; // Early exit
+                    if (sigma_i < 1e-10) break;
                     
                     const eigenvalue = sigma_i * sigma_i;
                     const streamSNR = (snr_linear / R) * eigenvalue;
@@ -718,7 +732,6 @@ function computeErgodicCapacity() {
         
         currentRealization = chunkEnd;
         
-        // Update progress
         const progress = Math.round((currentRealization / numRealizations) * 100);
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.fillStyle = '#333';
@@ -727,21 +740,27 @@ function computeErgodicCapacity() {
         ctx.textBaseline = 'middle';
         ctx.fillText(`Computing... ${progress}%`, centerX, centerY);
         
-        // Continue processing or finalize
         if (currentRealization < numRealizations) {
-            setTimeout(processChunk, 10); // Small delay to update UI
+            setTimeout(processChunk, 10);
         } else {
-            // Average the capacities
             for (let i = 0; i < capacities.length; i++) {
                 capacities[i] /= numRealizations;
             }
             
-            // Plot results
-            plotErgodicCapacity(snrRange, capacities);
+            // Add curve to array
+            ergodicCurves.push({
+                nt: nt,
+                nr: nr,
+                snrRange: snrRange,
+                capacities: capacities,
+                color: CURVE_COLORS[ergodicCurves.length]
+            });
+            
+            updateCurvesList();
+            plotAllErgodicCurves();
         }
     }
     
-    // Start processing after a short delay
     setTimeout(processChunk, 50);
 }
 
@@ -1257,6 +1276,184 @@ function plotErgodicCapacity(snrRange, capacities) {
             }
         });
     }
+}
+
+function clearAllCurves() {
+    ergodicCurves = [];
+    updateCurvesList();
+    
+    // Clear the chart
+    const canvas = document.getElementById('ergodicChart');
+    if (window.ergodicChart && typeof window.ergodicChart.destroy === 'function') {
+        window.ergodicChart.destroy();
+    }
+    
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#333';
+    ctx.font = '14px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('Add curves to start plotting', canvas.width / 2, canvas.height / 2);
+}
+
+function removeCurve(index) {
+    ergodicCurves.splice(index, 1);
+    updateCurvesList();
+    
+    if (ergodicCurves.length > 0) {
+        plotAllErgodicCurves();
+    } else {
+        clearAllCurves();
+    }
+}
+
+function updateCurvesList() {
+    const container = document.getElementById('curvesContainer');
+    const listHeader = document.getElementById('curvesList').querySelector('strong');
+    listHeader.textContent = `Added Curves (${ergodicCurves.length}/${MAX_CURVES}):`;
+    
+    if (ergodicCurves.length === 0) {
+        container.innerHTML = '<em style="color: #999;">No curves added yet</em>';
+        return;
+    }
+    
+    container.innerHTML = ergodicCurves.map((curve, index) => `
+        <div style="display: flex; align-items: center; margin: 5px 0; padding: 5px; background: #f5f5f5; border-radius: 4px;">
+            <span style="width: 15px; height: 15px; background: ${curve.color}; border-radius: 3px; margin-right: 8px;"></span>
+            <span style="flex: 1;">${curve.nt}x${curve.nr} MIMO</span>
+            <button onclick="removeCurve(${index})" style="padding: 2px 8px; font-size: 11px; background: #e74c3c; color: white; border: none; border-radius: 3px; cursor: pointer;">Remove</button>
+        </div>
+    `).join('');
+}
+
+function plotAllErgodicCurves() {
+    const canvas = document.getElementById('ergodicChart');
+    
+    if (!canvas || ergodicCurves.length === 0) {
+        return;
+    }
+    
+    const ctx = canvas.getContext('2d');
+    
+    if (window.ergodicChart && typeof window.ergodicChart.destroy === 'function') {
+        window.ergodicChart.destroy();
+    }
+    
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    const isMobile = window.innerWidth <= 576;
+    const isTinyScreen = window.innerWidth <= 300;
+    
+    // Create datasets from all curves
+    const datasets = ergodicCurves.map(curve => ({
+        label: `${curve.nt}x${curve.nr} MIMO`,
+        data: curve.capacities,
+        borderColor: curve.color,
+        backgroundColor: curve.color + '20',
+        borderWidth: isTinyScreen ? 1.5 : (isMobile ? 2 : 3),
+        pointRadius: isTinyScreen ? 1 : (isMobile ? 2 : 3),
+        pointBackgroundColor: curve.color,
+        pointBorderColor: curve.color,
+        tension: 0.1,
+        fill: false
+    }));
+    
+    // Use SNR range from first curve (assuming all curves use same range)
+    const snrLabels = ergodicCurves[0].snrRange.map(val => val.toFixed(1));
+    
+    window.ergodicChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: snrLabels,
+            datasets: datasets
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                    labels: {
+                        font: {
+                            size: isTinyScreen ? 8 : (isMobile ? 10 : 12),
+                        },
+                        boxWidth: isTinyScreen ? 8 : 12,
+                        usePointStyle: true
+                    }
+                },
+                title: {
+                    display: true,
+                    text: 'MIMO Ergodic Capacity Comparison',
+                    font: {
+                        size: isTinyScreen ? 10 : (isMobile ? 12 : 16),
+                        weight: 'bold'
+                    },
+                    padding: isTinyScreen ? 2 : (isMobile ? 5 : 10)
+                }
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: !isTinyScreen,
+                        text: 'SNR (dB)',
+                        font: {
+                            size: isMobile ? 10 : 14,
+                            weight: 'bold'
+                        }
+                    },
+                    ticks: {
+                        font: {
+                            size: isTinyScreen ? 7 : (isMobile ? 8 : 12)
+                        },
+                        maxRotation: 0,
+                        autoSkip: true,
+                        autoSkipPadding: isTinyScreen ? 10 : (isMobile ? 15 : 50)
+                    },
+                    grid: {
+                        display: !isTinyScreen,
+                        color: 'rgba(0, 0, 0, 0.1)'
+                    }
+                },
+                y: {
+                    title: {
+                        display: !isTinyScreen,
+                        text: 'Capacity (bps/Hz)',
+                        font: {
+                            size: isMobile ? 10 : 14,
+                            weight: 'bold'
+                        }
+                    },
+                    beginAtZero: false,
+                    ticks: {
+                        font: {
+                            size: isTinyScreen ? 7 : (isMobile ? 8 : 12)
+                        },
+                        padding: isTinyScreen ? 5 : 3,
+                        count: isTinyScreen ? 4 : (isMobile ? 5 : 'auto')
+                    },
+                    grid: {
+                        display: true,
+                        color: 'rgba(0, 0, 0, 0.1)',
+                        drawBorder: true
+                    }
+                }
+            },
+            layout: {
+                padding: {
+                    left: isTinyScreen ? 30 : (isMobile ? 15 : 10),
+                    right: 5,
+                    top: 5,
+                    bottom: isTinyScreen ? 20 : 10
+                }
+            },
+            animation: {
+                duration: 800
+            },
+            devicePixelRatio: 2
+        }
+    });
 }
 
 // Add this function at the end of the file to fix Y-axis visibility
