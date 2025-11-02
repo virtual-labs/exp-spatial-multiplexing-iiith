@@ -1473,4 +1473,60 @@ body canvas#ergodicChart.chartjs-render-monitor {
     }
 }
 
+/* Remove Curve Button Styling */
+.remove-curve-btn {
+    padding: 4px 8px;
+    font-size: 11px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-left: 8px;
+    min-width: 50px;
+    max-width: 60px;
+}
+
+.remove-curve-btn:hover {
+    background-color: #c0392b;
+}
+
+/* Curve item styling */
+#curvesContainer > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    padding: 5px;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+/* Ensure Chart.js wrapper elements don't hide the axes */
+body #TASK2 .right-column div.chart-container,
+body #TASK2 .right-column div[style] {
+    overflow: visible !important; /* Allow Y-axis to be visible outside container */
+}
+
+/* Ensure our overrides take precedence */
+body canvas#ergodicChart.chartjs-render-monitor {
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+/* Override any Chart.js styles at extremely small sizes */
+@media (max-width: 290px) {
+    body canvas#ergodicChart.chartjs-render-monitor {
+        margin-left: 45px !important;
+        max-width: calc(100% - 50px) !important;
+    }
+    
+    /* Create more space for Y-axis */
+    body #TASK2 .right-column div[style] {
+        padding-left: 50px !important;
+        padding-bottom: 35px !important;
+    }
+}
+
 

@@ -1322,7 +1322,7 @@ function updateCurvesList() {
         <div style="display: flex; align-items: center; margin: 5px 0; padding: 5px; background: #f5f5f5; border-radius: 4px;">
             <span style="width: 15px; height: 15px; background: ${curve.color}; border-radius: 3px; margin-right: 8px;"></span>
             <span style="flex: 1;">${curve.nt}x${curve.nr} MIMO</span>
-            <button onclick="removeCurve(${index})" style="padding: 2px 8px; font-size: 11px; background: #e74c3c; color: white; border: none; border-radius: 3px; cursor: pointer;">Remove</button>
+            <button onclick="removeCurve(${index})" class="remove-curve-btn">Remove</button>
         </div>
     `).join('');
 }
