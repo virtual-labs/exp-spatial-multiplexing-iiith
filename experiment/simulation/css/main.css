@@ -647,6 +647,15 @@ table.matrix td {
     padding: 6px 10px;
     text-align: center;
     min-width: 50px;
+    white-space: nowrap; /* This new line prevents content from wrapping */
+}
+table.matrix th {
+    border: 1px solid var(--border-color);
+    padding: 6px 10px;
+    text-align: center; /* This centers the header text */
+    background-color: #f2f2f2; /* Adds a light background to the header */
+    font-weight: bold;
+    white-space: nowrap; /* This prevents headers like "Capacity (bps/Hz)" from wrapping */
 }
 .metric-container {
     display: flex;
