@@ -1,23 +1,23 @@
-document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('myForm').addEventListener('submit', function (e) {
-        e.preventDefault();
-        generateMatrix();
-    });
+// document.addEventListener('DOMContentLoaded', function () {
+//     document.getElementById('myForm').addEventListener('submit', function (e) {
+//         e.preventDefault();
+//         generateMatrix();
+//     });
 
-    document.getElementById('svdPrecodingBtn').addEventListener('click', function () {
-        performSVD();
-        document.getElementById('capacityBtn').style.display = 'block'; // Show the Capacity Analysis button
-    });
+//     document.getElementById('svdPrecodingBtn').addEventListener('click', function () {
+//         performSVD();
+//         document.getElementById('capacityBtn').style.display = 'block'; // Show the Capacity Analysis button
+//     });
 
-    document.getElementById('capacityBtn').addEventListener('click', function () {
-        displayCapacityForm();
-    });
+//     document.getElementById('capacityBtn').addEventListener('click', function () {
+//         displayCapacityForm();
+//     });
 
-    document.getElementById('getCapacity').addEventListener('click', function (e) {
-        e.preventDefault();
-        calculateCapacity(svdResult); // Pass svdResult as a parameter
-    });
-});
+//     document.getElementById('getCapacity').addEventListener('click', function (e) {
+//         e.preventDefault();
+//         calculateCapacity(svdResult); // Pass svdResult as a parameter
+//     });
+// });
 
 let matrixData = [];
 let txElements = [], rxElements = [];
