@@ -9,6 +9,13 @@
 }
 html{
     scroll-behavior: smooth;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 ::-webkit-scrollbar {
@@ -696,19 +703,27 @@ table.matrix th {
   .columns-container {
     flex-direction: column;
     padding: 10px;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
   }
   
   .left-column, .center-column, .right-column {
-    flex: 1 0 auto;
-    width: 100%;
-    margin: 0 0 15px 0;
-    min-width: 0;
+    flex: 1 0 auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 0 15px 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
   }
   
   .simulation-container {
     min-height: 400px;
     align-items: center;
     justify-content: center;
+    max-width: 100% !important;
+    overflow-x: auto !important;
   }
   
   .column {
@@ -723,16 +738,21 @@ table.matrix th {
 @media (max-width: 768px) {
   .columns-container {
     padding: 8px;
+    max-width: 100% !important;
   }
   
   .left-column, .center-column, .right-column {
     padding: 15px;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
   }
   
   .simulation-container {
     min-height: 350px;
     gap: 10px;
     justify-content: center;
+    max-width: 100% !important;
   }
   
   .column {
@@ -744,16 +764,25 @@ table.matrix th {
 @media (max-width: 576px) {
   .columns-container {
     padding: 5px;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
   }
   
   .left-column, .center-column, .right-column {
     padding: 12px;
     margin-bottom: 10px;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-x: auto !important;
   }
   
   .simulation-container {
     min-height: 300px;
     gap: 5px;
+    max-width: 100% !important;
+    overflow-x: auto !important;
   }
   
   .column {
@@ -786,6 +815,11 @@ table.matrix th {
     font-size: 30px;
     margin: 5% auto;
     width: 90%;
+  }
+  
+  canvas {
+    max-width: 100% !important;
+    width: 100% !important;
   }
 }
 
@@ -959,17 +993,29 @@ table.matrix th {
 /* Ultra small screens (300px width) */
 @media (max-width: 300px) {
   .max-width {
-    padding: 0 5px;
+    padding: 0 3px !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
   }
   
   .columns-container {
-    padding: 2px;
-    gap: 5px;
+    padding: 2px !important;
+    gap: 5px !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    margin: 0 !important;
   }
   
   .left-column, .center-column, .right-column {
-    padding: 5px;
-    margin-bottom: 5px;
+    padding: 4px !important;
+    margin: 0 0 5px 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    border-width: 1px !important;
   }
   
   section .title {
@@ -980,6 +1026,9 @@ table.matrix th {
     min-height: 200px;
     justify-content: center;
     align-items: center;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    padding: 0 !important;
   }
   
   .column {
@@ -1000,14 +1049,32 @@ table.matrix th {
     padding: 4px 6px;
     font-size: 0.75rem;
     margin-bottom: 5px;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
   
   h3 {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
   
   .info-block {
-    padding: 8px;
+    padding: 6px;
+  }
+  
+  input {
+    padding: 4px !important;
+    font-size: 0.75rem !important;
+  }
+  
+  canvas {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+  
+  table.matrix td {
+    padding: 2px 3px !important;
+    min-width: 25px !important;
+    font-size: 0.7rem !important;
   }
 }
 
@@ -1539,3 +1606,104 @@ body canvas#ergodicChart.chartjs-render-monitor {
 }
 
 
+
+/* ===================================================================================== */
+/* CRITICAL RESPONSIVE FIXES FOR SMALL SCREENS (300px and below)                        */
+/* These rules override inline styles and ensure all content fits within viewport       */
+/* ===================================================================================== */
+
+@media (max-width: 576px) {
+    /* Override inline styles on TASK2 columns that add horizontal margins */
+    #TASK2 .left-column[style],
+    #TASK2 .right-column[style] {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        flex: 1 !important;
+    }
+    
+    /* Ensure all columns stay within viewport */
+    .left-column, .center-column, .right-column,
+    .left-column.box, .center-column.box, .right-column.box {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+}
+
+@media (max-width: 320px) {
+    /* Extra tight controls for very small screens */
+    .columns-container {
+        padding: 2px !important;
+    }
+    
+    .left-column, .center-column, .right-column {
+        padding: 6px !important;
+        border-width: 1px !important;
+    }
+}
+
+@media (max-width: 300px) {
+    /* Ultra-aggressive overrides for 300px screens */
+    * {
+        box-sizing: border-box !important;
+    }
+    
+    body, html {
+        overflow-x: hidden !important;
+        max-width: 100vw !important;
+    }
+    
+    .max-width {
+        padding: 0 2px !important;
+    }
+    
+    .columns-container {
+        padding: 1px !important;
+        gap: 3px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    
+    /* Force all column variations to fit */
+    .left-column, .center-column, .right-column,
+    .left-column.box, .center-column.box, .right-column.box,
+    #TASK1 .left-column, #TASK1 .center-column, #TASK1 .right-column,
+    #TASK2 .left-column, #TASK2 .right-column {
+        padding: 3px !important;
+        margin: 0 0 3px 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        border-width: 1px !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        flex: 1 !important;
+    }
+    
+    /* Override any inline styles */
+    [style*="margin-left"],
+    [style*="margin-right"] {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+    
+    /* Ensure simulation container doesn't overflow */
+    .simulation-container {
+        padding: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    
+    /* Make sure buttons fit */
+    button, .buttonTotal {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 4px !important;
+        font-size: 0.7rem !important;
+        box-sizing: border-box !important;
+    }
+}
+
+/* End critical responsive fixes */
