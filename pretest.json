@@ -1,0 +1,124 @@
+{
+  "version": 2.0,
+  "questions": [
+    {
+      "question": "Which of the following is TRUE?",
+      "answers": {
+        "A": "MIMO provides diversity and multiplexing while SIMO/MISO only provide diversity",
+        "B": "SIMO/MISO provide diversity and multiplexing while MIMO only provides diversity",
+        "C": "MIMO provides only multiplexing gain while SIMO/MISO provide only diversity gain",
+        "D": "All provide both multiplexing and diversity"
+      },
+      "explanations": {
+        "A": "Correct! MIMO can provide both diversity and multiplexing gain, while SIMO/MISO primarily offer diversity gain.",
+        "B": "Incorrect. SIMO/MISO do not provide multiplexing gain.",
+        "C": "Incorrect. MIMO can provide both gains, not just multiplexing.",
+        "D": "Incorrect. SIMO/MISO do not inherently support multiplexing gain."
+      },
+      "correctAnswer": "A",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "How is rank(H) related to the number of antennas at the transmitter and receiver?",
+      "answers": {
+        "A": "Mt + Mr",
+        "B": "min(Mt, Mr)",
+        "C": "max(Mt, Mr)",
+        "D": "Mt Mt"
+      },
+      "explanations": {
+        "A": "Incorrect. Rank(H) is not simply the sum of the number of antennas.",
+        "B": "Correct! The maximum possible rank of the channel matrix is min(Mt, Mr).",
+        "C": "Incorrect. The maximum is the minimum of the two antenna counts, not the maximum.",
+        "D": "Incorrect. This expression is not meaningful in this context."
+      },
+      "correctAnswer": "B",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "The matrices U and V in the SVD of the MIMO channel matrix are...",
+      "answers": {
+        "A": "complex unitary",
+        "B": "complex Hermitian",
+        "C": "real Hermitian",
+        "D": "depends on the channel"
+      },
+      "explanations": {
+        "A": "Correct! In SVD, U and V are complex unitary matrices.",
+        "B": "Incorrect. Hermitian matrices are equal to their conjugate transpose, which is not the case here.",
+        "C": "Incorrect. They are generally complex, not purely real.",
+        "D": "Incorrect. This property does not depend on the specific channel realization."
+      },
+      "correctAnswer": "A",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "How many non-zero entries will the matrix S have in the SVD of H?",
+      "answers": {
+        "A": "Mr",
+        "B": "Mt",
+        "C": "rank(H)",
+        "D": "Mr Mt"
+      },
+      "explanations": {
+        "A": "Incorrect. The number of rows in S is not the same as the number of non-zero entries.",
+        "B": "Incorrect. The number of transmit antennas does not directly determine this.",
+        "C": "Correct! The number of non-zero singular values equals rank(H).",
+        "D": "Incorrect. Mr × Mt is the total number of elements, not non-zero singular values."
+      },
+      "correctAnswer": "C",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Which of the following statements about spatial multiplexing is true?",
+      "answers": {
+        "A": "It always improves reliability",
+        "B": "It only works with single antenna systems",
+        "C": "It increases capacity linearly with the number of antennas under ideal conditions",
+        "D": "It is independent of channel state information"
+      },
+      "explanations": {
+        "A": "Incorrect. Spatial multiplexing improves data rate, not necessarily reliability.",
+        "B": "Incorrect. It requires multiple antennas.",
+        "C": "Correct! Under ideal full-rank and high-SNR conditions, capacity scales linearly with the number of antennas.",
+        "D": "Incorrect. CSI is often needed at least at the receiver for decoding."
+      },
+      "correctAnswer": "C",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Which of the following are TRUE about the diversity-multiplexing tradeoff?",
+      "answers": {
+        "A": "MIMO systems only provide multiplexing gain",
+        "B": "Trying to achieve diversity gain will lead to loss in multiplexing gain",
+        "C": "Diversity gain can be achieved without any loss in multiplexing gain",
+        "D": "Diversity gain will enhance multiplexing gain"
+      },
+      "explanations": {
+        "A": "Incorrect. MIMO can provide both gains, but not simultaneously at maximum levels.",
+        "B": "Correct! Increasing diversity generally reduces achievable multiplexing gain due to the tradeoff.",
+        "C": "Incorrect. There is usually a tradeoff — increasing one reduces the other.",
+        "D": "Incorrect. Diversity and multiplexing gains compete rather than enhance each other."
+      },
+      "correctAnswer": "B",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Which of the following is NOT a drawback of spatial multiplexing in MIMO?",
+      "answers": {
+        "A": "It requires rich scattering environment",
+        "B": "It degrades performance in correlated channels",
+        "C": "It reduces data rate in high SNR",
+        "D": "It increases receiver complexity"
+      },
+      "explanations": {
+        "A": "Incorrect. This is indeed a drawback — rich scattering is often required.",
+        "B": "Incorrect. Channel correlation can indeed reduce spatial multiplexing performance.",
+        "C": "Correct! In high SNR, spatial multiplexing actually increases data rate, not reduces it.",
+        "D": "Incorrect. Receiver complexity is indeed a drawback."
+      },
+      "correctAnswer": "C",
+      "difficulty": "beginner"
+    }
+  ]
+}
