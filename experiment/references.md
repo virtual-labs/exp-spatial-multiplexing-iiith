@@ -3,3 +3,5 @@
 [2] Wireless Communications by Andrea goldsmith, Draft of second edition. (http://web.stanford.edu/class/ee359/doc/WirelessComm_Chp1-16_March32020.pdf)
 
 [3] Introduction to MIMO communications. (https://z-library.sk/book/2339419/9828d9/introduction-to-mimo-communications.html)
+
+[4] MIMO: An Overview of Multiple-Input Multiple-Output Technology. (https://www.gaussianwaves.com/2025/02/mimo-an-overview-of-multi-input-multi-output-technology/)
