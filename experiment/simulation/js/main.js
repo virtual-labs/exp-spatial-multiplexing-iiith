@@ -27,9 +27,55 @@ let ergodicCurves = [];
 const MAX_CURVES = 6;
 const CURVE_COLORS = ['#3498db', '#e74c3c', '#2ecc71', '#f39c12', '#9b59b6', '#1abc9c'];
 
+// MODIFIED: document.addEventListener('DOMContentLoaded', ...)
 document.addEventListener('DOMContentLoaded', () => {
+    // ADDED: Initial Highlight
+    highlightInstruction('sm-step-1');
+    
     resetSimulation();
+
+    // ADDED: Input Listeners for Task 1
+    ['txCount', 'rxCount', 'snrInput'].forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.addEventListener('input', () => highlightInstruction('sm-step-2'));
+    });
+
+    // ADDED: Input Listeners for Task 2
+    // Step 2: Antenna Config
+    ['txCountErgodic', 'rxCountErgodic'].forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.addEventListener('input', () => highlightInstruction('ec-step-2'));
+    });
+
+    // Step 3: SNR Range
+    ['snrMin', 'snrMax', 'snrStep'].forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.addEventListener('input', () => highlightInstruction('ec-step-3'));
+    });
+
+    // Step 4: Realizations
+    const numReal = document.getElementById('numRealizations');
+    if(numReal) numReal.addEventListener('input', () => highlightInstruction('ec-step-4'));
 });
+
+function highlightInstruction(stepId) {
+    // List of all possible steps to clear
+    const allSteps = [
+        'sm-step-1', 'sm-step-2', 'sm-step-3', 'sm-step-4', 'sm-step-5', 'sm-step-6', 'sm-step-7',
+        'ec-step-1', 'ec-step-2', 'ec-step-3', 'ec-step-4', 'ec-step-5', 'ec-step-6', 'ec-step-7'
+    ];
+    
+    allSteps.forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.classList.remove('active-instruction');
+    });
+
+    // Add active class to target step
+    const target = document.getElementById(stepId);
+    if (target) {
+        target.classList.add('active-instruction');
+    }
+}
 
 function validateAntennaCount(input) {
     // Ensure values are between 1-6
@@ -38,6 +84,10 @@ function validateAntennaCount(input) {
 }
 
 function resetSimulation() {
+    // ADDED: Highlight Reset Step (Step 7) then back to Start (Step 1)
+    highlightInstruction('sm-step-7');
+    setTimeout(() => highlightInstruction('sm-step-1'), 1000);
+
     document.getElementById("txCount").value = 4; // Default to 4 instead of hardcoded 6
     document.getElementById("rxCount").value = 4; // Default to 4 instead of hardcoded 6
     matrixData = [];
@@ -98,6 +148,10 @@ function simulate() {
         
         document.getElementById("simulateBtn").disabled = true;
 
+        // ADDED: Highlight Analyze Step (Step 3) immediately, 
+        // then guide to Perform SVD (Step 4) shortly after
+        highlightInstruction('sm-step-3');
+        setTimeout(() => highlightInstruction('sm-step-4'), 2000);
     } catch (error) {
         showError(error.message);
     }
@@ -412,6 +466,8 @@ function performSVD() {
         document.getElementById("eigenbeamBtn").style.display = "block";
         document.getElementById("svdBtn").disabled = true;
 
+        // ADDED: Highlight Visualize Step (Step 5)
+        highlightInstruction('sm-step-5');
     } catch (error) {
         showError('Error performing SVD: ' + error.message);
     }
@@ -600,9 +656,16 @@ function visualizeEigenbeams() {
             const analysisInfo = document.getElementById("analysisInfo");
             analysisInfo.innerHTML = `<p>Showing <strong>${R}</strong> eigenbeams with singular values σ, eigenvalues λ=σ², and individual capacities.<br>Total capacity: <strong>${totalCapacity.toFixed(2)} bps/Hz</strong></p>`;
 
+            // ADDED: Highlight Interpret Metrics (Step 6)
+            highlightInstruction('sm-step-6');
+
             const eigenbeamBtn = document.getElementById("eigenbeamBtn");
             eigenbeamBtn.textContent = "Return to Channel View";
             eigenbeamBtn.onclick = () => {
+                // --- ADD THE LOGIC HERE ---
+                // Highlight Step 7 (Reset) to guide them to the next logical action
+                highlightInstruction('sm-step-7');
+
                 eigenbeamBtn.textContent = "Visualize Eigenbeams";
                 eigenbeamBtn.onclick = visualizeEigenbeams;
                 analysisInfo.innerHTML = `<p>The SVD decomposes the ${svdResult.nr}×${svdResult.nt} complex channel into <strong>${R}</strong> independent parallel sub-channels (eigenbeams).</p>`;
@@ -758,6 +821,15 @@ function computeErgodicCapacity() {
             
             updateCurvesList();
             plotAllErgodicCurves();
+
+            // --- INSERT HERE ---
+            // ADDED: Highlight Analyze Graph (Step 6)
+            highlightInstruction('ec-step-6');
+            
+            // Optional: If multiple curves exist, you can point to Step 7
+            if (ergodicCurves.length > 1) {
+                setTimeout(() => highlightInstruction('ec-step-7'), 1500);
+            }
         }
     }
     
@@ -1509,7 +1581,11 @@ function showTab(tabId) {
     
     if (tabId === 'TASK1') {
         document.getElementById('tab1Btn').classList.add('active');
+        // ADDED: Reset to Step 1 for Task 1
+        highlightInstruction('sm-step-1');
     } else {
         document.getElementById('tab2Btn').classList.add('active');
+        // ADDED: Reset to Step 1 for Task 2
+        highlightInstruction('ec-step-1');
     }
 }
