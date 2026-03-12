@@ -36,40 +36,6 @@
       "difficulty": "intermediate"
     },
     {
-      "question": "Find the rank of the matrix [[1, 2, 3], [0, 2, 2], [1, 4, 5]].",
-      "answers": {
-        "a": "1",
-        "b": "2",
-        "c": "3",
-        "d": "None of the above"
-      },
-      "explanations": {
-        "a": "Incorrect. There are more than one independent row.",
-        "b": "Correct. Row 3 is a linear combination of Row 1 and Row 2, so there are only 2 independent rows.",
-        "c": "Incorrect. Not all rows are independent.",
-        "d": "Incorrect. Option b is correct."
-      },
-      "correctAnswer": "b",
-      "difficulty": "beginner"
-    },
-    {
-      "question": "Find the rank of the matrix [[1, 0, 0], [0, 1, 0], [0, 0, 1]].",
-      "answers": {
-        "a": "1",
-        "b": "2",
-        "c": "3",
-        "d": "None of the above"
-      },
-      "explanations": {
-        "a": "Incorrect. The identity matrix has all independent rows.",
-        "b": "Incorrect. The rank is greater than 2.",
-        "c": "Correct. This is the 3×3 identity matrix, which has full rank (rank = 3).",
-        "d": "Incorrect. Option c is correct."
-      },
-      "correctAnswer": "c",
-      "difficulty": "beginner"
-    },
-    {
       "question": "Find the SVD of the matrix [[3, 0], [4, 5]].",
       "answers": {
         "a": "U = [[0.6, -0.8], [0.8, 0.6]], Σ = [[5, 0], [0, 3]], Vᵀ = [[1, 0], [0, 1]]",
@@ -116,23 +82,6 @@
         "b": "Incorrect. Capacity increase saturates when Nt > Nr.",
         "c": "Correct. If Nt > Nr, the extra streams cannot be fully separated, leading to inter-stream interference and reduced performance.",
         "d": "Incorrect. Ignoring streams wastes capacity but doesn't avoid interference in most cases."
-      },
-      "correctAnswer": "c",
-      "difficulty": "intermediate"
-    },
-    {
-      "question": "Which of the following MIMO techniques primarily exploits the spatial multiplexing gain rather than diversity gain?",
-      "answers": {
-        "a": "Alamouti scheme",
-        "b": "Space-time block coding",
-        "c": "Vertical Bell Labs Layered Space-Time (V-BLAST)",
-        "d": "Transmit diversity scheme"
-      },
-      "explanations": {
-        "a": "Incorrect. Alamouti is a diversity scheme.",
-        "b": "Incorrect. Space-time block coding targets diversity gain.",
-        "c": "Correct. V-BLAST is designed for high data rate transmission by sending multiple independent streams, focusing on multiplexing gain rather than diversity.",
-        "d": "Incorrect. Transmit diversity aims for reliability, not multiplexing gain."
       },
       "correctAnswer": "c",
       "difficulty": "intermediate"

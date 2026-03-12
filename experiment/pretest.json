@@ -70,23 +70,6 @@
       "difficulty": "beginner"
     },
     {
-      "question": "Which condition must be met for spatial multiplexing to work effectively?",
-      "answers": {
-        "A": "The number of receive antennas must be less than the number of transmit antennas",
-        "B": "The channel must be frequency flat",
-        "C": "The MIMO channel matrix must be full rank",
-        "D": "All antennas must be omnidirectional"
-      },
-      "explanations": {
-        "A": "Incorrect. Having fewer receive antennas can actually limit spatial multiplexing.",
-        "B": "Incorrect. Spatial multiplexing can also work in frequency-selective channels with proper processing.",
-        "C": "Correct! Full rank ensures multiple independent spatial streams for multiplexing.",
-        "D": "Incorrect. Antenna directionality is not the primary factor."
-      },
-      "correctAnswer": "C",
-      "difficulty": "intermediate"
-    },
-    {
       "question": "Which of the following statements about spatial multiplexing is true?",
       "answers": {
         "A": "It always improves reliability",
